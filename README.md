@@ -67,7 +67,7 @@ We follow a three-branch workflow to maintain code stability and enable parallel
 2.  **Create feature branch**
 
     ```bash
-    git checkout -b feature/add-login-button
+    git checkout -b feature/module-name
     # Make your changes...
     ```
 
