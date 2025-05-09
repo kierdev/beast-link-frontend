@@ -68,15 +68,12 @@ export default function NotificationsDropdown({ onClose }) {
             onClick={() => markAsRead(notification.id)}
           >
             <div className={styles.notificationContent}>
-              <div className={styles.notificationType}>{notification.type}</div>
+              <h3 className={styles.notificationType}>{notification.type}</h3>
               <div className={styles.notificationMessage}>{notification.message}</div>
             </div>
             <div className={styles.notificationTime}>{notification.time}</div>
           </div>
         ))}
-      </div>
-      <div className={styles.notificationsFooter}>
-        <button className={styles.viewAllNotifications}>View all notifications</button>
       </div>
     </div>
   )
