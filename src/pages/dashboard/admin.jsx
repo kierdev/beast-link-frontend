@@ -3,9 +3,11 @@
 import { useState } from "react"
 import styles from "./dashboard.module.css"
 import Sidebar from "./sidebar"
+import NotificationsDropdown from "./notifications"
 
 export default function Admin_Dashboard() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [showNotifications, setShowNotifications] = useState(false)
 
   return (
     <div className={styles.dashboardLayout}>
@@ -15,8 +17,9 @@ export default function Admin_Dashboard() {
           <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Administrator</span>
-            <div className={styles.notificationIcon}>
+            <div className={styles.notificationIcon} onClick={() => setShowNotifications(!showNotifications)}>
               <span className={styles.notificationBadge}>2</span>🔔
+              {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
             </div>
             <button className={styles.logoutButton}>Log out</button>
           </div>
