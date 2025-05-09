@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./dashboard.module.css"
-import Sidebar from "./sidebar"
-import NotificationsDropdown from "./notifications"
+import { useState } from "react";
+import styles from "./dashboard.module.css";
+import Sidebar from "./sidebar";
+import NotificationsDropdown from "./notifications";
 
 export default function Admin_Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [showNotifications, setShowNotifications] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <div className={styles.dashboardLayout}>
@@ -17,9 +17,16 @@ export default function Admin_Dashboard() {
           <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Administrator</span>
-            <div className={styles.notificationIcon} onClick={() => setShowNotifications(!showNotifications)}>
+            <div
+              className={styles.notificationIcon}
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
               <span className={styles.notificationBadge}>2</span>🔔
-              {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
+              {showNotifications && (
+                <NotificationsDropdown
+                  onClose={() => setShowNotifications(false)}
+                />
+              )}
             </div>
             <button className={styles.logoutButton}>Log out</button>
           </div>
@@ -37,19 +44,25 @@ export default function Admin_Dashboard() {
           {/* Navigation Tabs */}
           <div className={styles.filterTabs}>
             <button
-              className={`${styles.filterTab} ${activeTab === "overview" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "overview" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("overview")}
             >
               Overview
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "applicants" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "applicants" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("applicants")}
             >
               Applicants
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "courses" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "courses" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("courses")}
             >
               Courses
@@ -61,20 +74,28 @@ export default function Admin_Dashboard() {
             {/* Application Status */}
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Application Status</h2>
-              <p className={styles.chartSubtitle}>Distribution of application statuses</p>
+              <p className={styles.chartSubtitle}>
+                Distribution of application statuses
+              </p>
               <div className={styles.chartContent}>
                 <div className={styles.pieChart}>
                   <div className={styles.pieChartLegend}>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.passedColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.passedColor}`}
+                      ></span>
                       <span>Passed (70%)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.failedColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.failedColor}`}
+                      ></span>
                       <span>Failed (12%)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.pendingColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.pendingColor}`}
+                      ></span>
                       <span>Pending (18%)</span>
                     </div>
                   </div>
@@ -85,7 +106,9 @@ export default function Admin_Dashboard() {
             {/* Applicants by Course */}
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Applicants by Course</h2>
-              <p className={styles.chartSubtitle}>Number of applicants per course</p>
+              <p className={styles.chartSubtitle}>
+                Number of applicants per course
+              </p>
               <div className={styles.chartContent}>
                 <div className={styles.barChart}>
                   <div className={styles.barChartBar} style={{ height: "40%" }}>
@@ -96,7 +119,10 @@ export default function Admin_Dashboard() {
                     <span className={styles.barLabel}>CE</span>
                     <span className={styles.barValue}>3</span>
                   </div>
-                  <div className={styles.barChartBar} style={{ height: "100%" }}>
+                  <div
+                    className={styles.barChartBar}
+                    style={{ height: "100%" }}
+                  >
                     <span className={styles.barLabel}>IT</span>
                     <span className={styles.barValue}>5</span>
                   </div>
@@ -115,7 +141,9 @@ export default function Admin_Dashboard() {
             {/* Application Trends */}
             <div className={styles.chartCardFull}>
               <h2 className={styles.chartTitle}>Application Trends</h2>
-              <p className={styles.chartSubtitle}>Monthly application submissions</p>
+              <p className={styles.chartSubtitle}>
+                Monthly application submissions
+              </p>
               <div className={styles.chartContent}>
                 <div className={styles.lineChart}>
                   <div className={styles.lineChartLabels}>
@@ -139,7 +167,7 @@ export default function Admin_Dashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function StatCard({ title, value, icon }) {
@@ -153,5 +181,5 @@ function StatCard({ title, value, icon }) {
         <div className={styles.statIcon}>{icon}</div>
       </div>
     </div>
-  )
+  );
 }

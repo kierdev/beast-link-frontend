@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./dashboard.module.css"
-import Sidebar from "./sidebar"
-import NotificationsDropdown from "./notifications"
+import { useState } from "react";
+import styles from "./dashboard.module.css";
+import Sidebar from "./sidebar";
+import NotificationsDropdown from "./notifications";
 
 export default function Faculty_Dashboard() {
-  const [activeTab, setActiveTab] = useState("upcoming")
-  const [showNotifications, setShowNotifications] = useState(false)
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <div className={styles.dashboardLayout}>
@@ -17,9 +17,16 @@ export default function Faculty_Dashboard() {
           <h1 className={styles.dashboardTitle}>Interviewer Dashboard</h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Interviewer</span>
-            <div className={styles.notificationIcon} onClick={() => setShowNotifications(!showNotifications)}>
+            <div
+              className={styles.notificationIcon}
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
               <span className={styles.notificationBadge}>1</span>🔔
-              {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
+              {showNotifications && (
+                <NotificationsDropdown
+                  onClose={() => setShowNotifications(false)}
+                />
+              )}
             </div>
             <button className={styles.logoutButton}>Log out</button>
           </div>
@@ -37,25 +44,33 @@ export default function Faculty_Dashboard() {
           {/* Navigation Tabs */}
           <div className={styles.filterTabs}>
             <button
-              className={`${styles.filterTab} ${activeTab === "upcoming" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "upcoming" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("upcoming")}
             >
               Upcoming Interviews
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "pending" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "pending" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("pending")}
             >
               Pending Remarks
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "completed" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "completed" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("completed")}
             >
               Completed Interviews
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "calendar" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "calendar" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("calendar")}
             >
               Calendar View
@@ -93,7 +108,7 @@ export default function Faculty_Dashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function StatCard({ title, value, icon }) {
@@ -107,7 +122,7 @@ function StatCard({ title, value, icon }) {
         <div className={styles.statIcon}>{icon}</div>
       </div>
     </div>
-  )
+  );
 }
 
 function InterviewCard({ name, date, time, program, location }) {
@@ -137,5 +152,5 @@ function InterviewCard({ name, date, time, program, location }) {
       </div>
       <button className={styles.completeButton}>Mark as Completed</button>
     </div>
-  )
+  );
 }

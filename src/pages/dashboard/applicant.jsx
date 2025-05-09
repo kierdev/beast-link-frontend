@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import styles from "./dashboard.module.css"
-import Sidebar from "./sidebar"
-import CourseDetails from "./course-details"
-import NotificationsDropdown from "./notifications"
+import { useState, useRef, useEffect } from "react";
+import styles from "./dashboard.module.css";
+import Sidebar from "./sidebar";
+import CourseDetails from "./course-details";
+import NotificationsDropdown from "./notifications";
 
 export default function Applicant_Dashboard() {
   // State for search and filter functionality
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeFilter, setActiveFilter] = useState("all")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
 
   // State for course details modal and notifications
-  const [selectedCourse, setSelectedCourse] = useState(null)
-  const [showNotifications, setShowNotifications] = useState(false)
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Refs for click outside detection
-  const notificationsRef = useRef(null)
-  const bellIconRef = useRef(null)
+  const notificationsRef = useRef(null);
+  const bellIconRef = useRef(null);
 
   // Handle click outside to close notifications
   useEffect(() => {
@@ -29,15 +29,15 @@ export default function Applicant_Dashboard() {
         bellIconRef.current &&
         !bellIconRef.current.contains(event.target)
       ) {
-        setShowNotifications(false)
+        setShowNotifications(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [showNotifications])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showNotifications]);
 
   // Sample course data
   const courses = [
@@ -140,7 +140,7 @@ export default function Applicant_Dashboard() {
       category: "education",
       icon: "🎓",
     },
-  ]
+  ];
 
   // Sample application data
   const applications = [
@@ -156,33 +156,33 @@ export default function Applicant_Dashboard() {
       date: "2025-02-20",
       status: "pending",
     },
-  ]
+  ];
 
   // Filter courses based on search query and category filter
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.description.toLowerCase().includes(searchQuery.toLowerCase())
+      course.description.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesFilter =
       activeFilter === "all" ||
       (activeFilter === "technology" && course.category === "technology") ||
       (activeFilter === "education" && course.category === "education") ||
-      (activeFilter === "business" && course.category === "business")
+      (activeFilter === "business" && course.category === "business");
 
-    return matchesSearch && matchesFilter
-  })
+    return matchesSearch && matchesFilter;
+  });
 
   // Handle view details click
   const handleViewDetails = (course) => {
-    setSelectedCourse(course)
-  }
+    setSelectedCourse(course);
+  };
 
   // Toggle notifications
   const toggleNotifications = (e) => {
-    e.stopPropagation()
-    setShowNotifications(!showNotifications)
-  }
+    e.stopPropagation();
+    setShowNotifications(!showNotifications);
+  };
 
   return (
     <div className={styles.dashboardLayout}>
@@ -193,12 +193,18 @@ export default function Applicant_Dashboard() {
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Applicant</span>
             <div className={styles.notificationContainer}>
-              <div ref={bellIconRef} className={styles.notificationIcon} onClick={toggleNotifications}>
+              <div
+                ref={bellIconRef}
+                className={styles.notificationIcon}
+                onClick={toggleNotifications}
+              >
                 <span className={styles.notificationBadge}>2</span>🔔
               </div>
               {showNotifications && (
                 <div ref={notificationsRef}>
-                  <NotificationsDropdown onClose={() => setShowNotifications(false)} />
+                  <NotificationsDropdown
+                    onClose={() => setShowNotifications(false)}
+                  />
                 </div>
               )}
             </div>
@@ -222,31 +228,38 @@ export default function Applicant_Dashboard() {
           <div className={styles.sectionCard}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Available Courses</h2>
-              
             </div>
 
             {/* Course Filters */}
             <div className={styles.filterTabs}>
               <button
-                className={`${styles.filterTab} ${activeFilter === "all" ? styles.activeTab : ""}`}
+                className={`${styles.filterTab} ${
+                  activeFilter === "all" ? styles.activeTab : ""
+                }`}
                 onClick={() => setActiveFilter("all")}
               >
                 All
               </button>
               <button
-                className={`${styles.filterTab} ${activeFilter === "technology" ? styles.activeTab : ""}`}
+                className={`${styles.filterTab} ${
+                  activeFilter === "technology" ? styles.activeTab : ""
+                }`}
                 onClick={() => setActiveFilter("technology")}
               >
                 Technology
               </button>
               <button
-                className={`${styles.filterTab} ${activeFilter === "education" ? styles.activeTab : ""}`}
+                className={`${styles.filterTab} ${
+                  activeFilter === "education" ? styles.activeTab : ""
+                }`}
                 onClick={() => setActiveFilter("education")}
               >
                 Education
               </button>
               <button
-                className={`${styles.filterTab} ${activeFilter === "business" ? styles.activeTab : ""}`}
+                className={`${styles.filterTab} ${
+                  activeFilter === "business" ? styles.activeTab : ""
+                }`}
                 onClick={() => setActiveFilter("business")}
               >
                 Business & Accountancy
@@ -268,18 +281,31 @@ export default function Applicant_Dashboard() {
             <div className={styles.courseGrid}>
               {filteredCourses.map((course) => (
                 <div key={course.id} className={styles.courseCard}>
-                  <div className={`${styles.courseIcon} ${styles[course.category]}`}>{course.icon}</div>
+                  <div
+                    className={`${styles.courseIcon} ${
+                      styles[course.category]
+                    }`}
+                  >
+                    {course.icon}
+                  </div>
                   <div className={styles.courseContent}>
                     <div className={styles.courseHeader}>
                       <h3 className={styles.courseTitle}>{course.title}</h3>
-                      <button className={styles.viewDetailsLink} onClick={() => handleViewDetails(course)}>
+                      <button
+                        className={styles.viewDetailsLink}
+                        onClick={() => handleViewDetails(course)}
+                      >
                         View Details
                       </button>
                     </div>
                     <div className={styles.courseCount}>{course.count}</div>
-                    <p className={styles.courseDescription}>{course.description}</p>
+                    <p className={styles.courseDescription}>
+                      {course.description}
+                    </p>
                     <div className={styles.courseFooter}>
-                      <span className={styles.collegeTag}>{course.college}</span>
+                      <span className={styles.collegeTag}>
+                        {course.college}
+                      </span>
                       <span className={styles.dateTag}>📅 {course.date}</span>
                     </div>
                   </div>
@@ -290,7 +316,9 @@ export default function Applicant_Dashboard() {
 
           {/* Stats Card */}
           <div className={styles.statsCard}>
-            <h2 className={styles.statsTitle}>Learn Effectively With BeastLink College!</h2>
+            <h2 className={styles.statsTitle}>
+              Learn Effectively With BeastLink College!
+            </h2>
             <div className={styles.statsContent}>
               <div className={styles.statsIcon}>👨‍🎓</div>
               <div className={styles.statsInfo}>
@@ -304,7 +332,11 @@ export default function Applicant_Dashboard() {
           <div className={styles.sectionCard}>
             <h2 className={styles.sectionTitle}>View Application Status</h2>
             <div className={styles.statusTabs}>
-              <button className={`${styles.statusTab} ${styles.activeStatusTab}`}>Pending</button>
+              <button
+                className={`${styles.statusTab} ${styles.activeStatusTab}`}
+              >
+                Pending
+              </button>
               <button className={styles.statusTab}>Approved</button>
             </div>
 
@@ -331,26 +363,33 @@ export default function Applicant_Dashboard() {
           <div className={styles.formCard}>
             <h2 className={styles.formTitle}>Application Form</h2>
             <p className={styles.formDescription}>
-              A section with a direct link to the online application portal to view and submit personal details,
-              academic records, and documents.
+              A section with a direct link to the online application portal to
+              view and submit personal details, academic records, and documents.
             </p>
             <button className={styles.viewButton}>View</button>
           </div>
         </div>
 
         {/* Course Details Modal */}
-        {selectedCourse && <CourseDetails course={selectedCourse} onClose={() => setSelectedCourse(null)} />}
+        {selectedCourse && (
+          <CourseDetails
+            course={selectedCourse}
+            onClose={() => setSelectedCourse(null)}
+          />
+        )}
       </div>
     </div>
-  )
+  );
 }
 
 // Helper Components
 function ProgressStep({ label, status }) {
   return (
     <div className={styles.progressStep}>
-      <div className={`${styles.stepCircle} ${styles[status]}`}>{status === "completed" && "✓"}</div>
+      <div className={`${styles.stepCircle} ${styles[status]}`}>
+        {status === "completed" && "✓"}
+      </div>
       <div className={styles.stepLabel}>{label}</div>
     </div>
-  )
+  );
 }

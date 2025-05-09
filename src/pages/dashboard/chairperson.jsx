@@ -1,25 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./dashboard.module.css"
-import Sidebar from "./sidebar"
-import NotificationsDropdown from "./notifications"
+import { useState } from "react";
+import styles from "./dashboard.module.css";
+import Sidebar from "./sidebar";
+import NotificationsDropdown from "./notifications";
 
 export default function Chairperson_Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [showNotifications, setShowNotifications] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <div className={styles.dashboardLayout}>
       <Sidebar activePage="dashboard" />
       <div className={styles.dashboardMain}>
         <div className={styles.dashboardHeader}>
-          <h1 className={styles.dashboardTitle}>Information Technology Department Dashboard</h1>
+          <h1 className={styles.dashboardTitle}>
+            Information Technology Department Dashboard
+          </h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Department Chairperson</span>
-            <div className={styles.notificationIcon} onClick={() => setShowNotifications(!showNotifications)}>
+            <div
+              className={styles.notificationIcon}
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
               <span className={styles.notificationBadge}>1</span>🔔
-              {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
+              {showNotifications && (
+                <NotificationsDropdown
+                  onClose={() => setShowNotifications(false)}
+                />
+              )}
             </div>
             <button className={styles.logoutButton}>Log out</button>
           </div>
@@ -32,7 +41,8 @@ export default function Chairperson_Dashboard() {
             <div className={styles.infoAlertContent}>
               <h2 className={styles.infoAlertTitle}>Department View</h2>
               <p className={styles.infoAlertText}>
-                You are viewing data for the <strong>Information Technology</strong> department only
+                You are viewing data for the{" "}
+                <strong>Information Technology</strong> department only
               </p>
             </div>
           </div>
@@ -48,25 +58,33 @@ export default function Chairperson_Dashboard() {
           {/* Navigation Tabs */}
           <div className={styles.filterTabs}>
             <button
-              className={`${styles.filterTab} ${activeTab === "overview" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "overview" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("overview")}
             >
               Overview
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "applicants" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "applicants" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("applicants")}
             >
               Applicants
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "exams" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "exams" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("exams")}
             >
               Exams
             </button>
             <button
-              className={`${styles.filterTab} ${activeTab === "events" ? styles.activeTab : ""}`}
+              className={`${styles.filterTab} ${
+                activeTab === "events" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("events")}
             >
               Events
@@ -78,20 +96,28 @@ export default function Chairperson_Dashboard() {
             {/* Application Status */}
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Application Status</h2>
-              <p className={styles.chartSubtitle}>Distribution of Information Technology application statuses</p>
+              <p className={styles.chartSubtitle}>
+                Distribution of Information Technology application statuses
+              </p>
               <div className={styles.chartContent}>
                 <div className={styles.pieChart}>
                   <div className={styles.pieChartLegend}>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.passedColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.passedColor}`}
+                      ></span>
                       <span>Passed (80%)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.failedColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.failedColor}`}
+                      ></span>
                       <span>Failed (0%)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={`${styles.legendColor} ${styles.pendingColor}`}></span>
+                      <span
+                        className={`${styles.legendColor} ${styles.pendingColor}`}
+                      ></span>
                       <span>Pending (20%)</span>
                     </div>
                   </div>
@@ -102,7 +128,9 @@ export default function Chairperson_Dashboard() {
             {/* Exam Score Distribution */}
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Exam Score Distribution</h2>
-              <p className={styles.chartSubtitle}>Information Technology applicants by exam score ranges</p>
+              <p className={styles.chartSubtitle}>
+                Information Technology applicants by exam score ranges
+              </p>
               <div className={styles.chartContent}>
                 <div className={styles.barChart}>
                   <div className={styles.barChartBar} style={{ height: "80%" }}>
@@ -132,7 +160,7 @@ export default function Chairperson_Dashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function StatCard({ title, value, icon }) {
@@ -146,5 +174,5 @@ function StatCard({ title, value, icon }) {
         <div className={styles.statIcon}>{icon}</div>
       </div>
     </div>
-  )
+  );
 }
