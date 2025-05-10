@@ -5,6 +5,7 @@ export const GlobalDataContext = createContext();
 export function GlobalDataProvider({ children }) {
   const [documentLists, setDocumentLists] = useState([]);
   const [programs, setPrograms] = useState([]);
+  const [academicYears, setAcademicYears] = useState([]);
   const hasFetched = useRef(false);
 
   async function fetchData() {
@@ -41,6 +42,23 @@ export function GlobalDataProvider({ children }) {
     }
   }
 
+  async function fetchAcademicYears() {
+    try {
+      const response = await fetch("/api/academic-years");
+      const data = await response.json();
+      if (response.ok && Array.isArray(data.academicYears)) {
+        const nestedData = data.academicYears.flatMap((item) => item);
+        console.log("Fetched academic years:", nestedData);
+        setAcademicYears(nestedData);
+      } else {
+        setAcademicYears([]);
+      }
+    } catch (error) {
+      console.error("Error fetching academic years:", error);
+      setAcademicYears([]);
+    }
+  }
+
   useEffect(() => {
     if (!hasFetched.current) {
       async function fetchData() {
@@ -61,12 +79,23 @@ export function GlobalDataProvider({ children }) {
       }
       fetchData();
       fetchPrograms(); // Fetch programs data
+      fetchAcademicYears(); // Fetch academic years data
       hasFetched.current = true;
     }
   }, []);
 
   return (
-    <GlobalDataContext.Provider value={{ documentLists, setDocumentLists, fetchData, programs, fetchPrograms }}>
+    <GlobalDataContext.Provider
+      value={{
+        documentLists,
+        setDocumentLists,
+        fetchData,
+        programs,
+        fetchPrograms,
+        academicYears,
+        fetchAcademicYears,
+      }}
+    >
       {children}
     </GlobalDataContext.Provider>
   );

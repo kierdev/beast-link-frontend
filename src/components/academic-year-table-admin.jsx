@@ -1,15 +1,19 @@
-import { useState, useMemo, useContext } from "react"
-import { ChevronUp, ChevronDown } from "lucide-react"
-import { GlobalDataContext } from "./global-data-context"
-import Pagination from "./pagination"
+import { useState, useMemo, useContext, useEffect } from "react";
+import { ChevronUp, ChevronDown } from "lucide-react";
+import ActionMenu from "./action-menu";
+import Pagination from "./pagination";
+import { GlobalDataContext } from "./global-data-context";
+import ActionMenuAcademic from "./action-menu-academic";
+import ViewAcademicModal from "./view-academic-modal";
 
-export default function AcademicYearTable({ filters, searchTerm = "" }) {
+export default function AdminAcademicYearTable({ filters, searchTerm = "" }) {
   const { academicYears, fetchAcademicYears } = useContext(GlobalDataContext);
 
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [selectedAcademic, setSelectedAcademic] = useState(null);
 
   // Handle sorting
   const handleSort = (field) => {
@@ -26,6 +30,20 @@ export default function AcademicYearTable({ filters, searchTerm = "" }) {
     setCurrentPage(page);
   };
 
+  const handleView = (id) => {
+    const academic = academicYears.find((academic) => academic.id === id);
+    setSelectedAcademic(academic);
+  };
+
+  const handleDelete = async (id) => {
+    const response = await fetch(`/api/academic-years/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      fetchAcademicYears();
+    }
+  };
   // Filter and sort data
   const filteredAndSortedData = useMemo(() => {
     // First filter by search term
@@ -68,6 +86,10 @@ export default function AcademicYearTable({ filters, searchTerm = "" }) {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     return filteredAndSortedData.slice(indexOfFirstItem, indexOfLastItem);
   }, [filteredAndSortedData, currentPage, itemsPerPage]);
+
+  const handleCloseModal = () => {
+    setSelectedAcademic(null);
+  };
 
   return (
     <div className="table-container">
@@ -117,6 +139,7 @@ export default function AcademicYearTable({ filters, searchTerm = "" }) {
                     ))}
                 </div>
               </th>
+              <th className="column-actions">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -126,6 +149,12 @@ export default function AcademicYearTable({ filters, searchTerm = "" }) {
                   <td>{data.academic_year}</td>
                   <td>{data.academic_semester}</td>
                   <td>{new Date(data.created_at).toLocaleDateString()}</td>
+                  <td>
+                    <ActionMenuAcademic
+                      onView={() => handleView(data.id)}
+                      onDelete={() => handleDelete(data.id)}
+                    />
+                  </td>
                 </tr>
               ))
             ) : (
@@ -145,6 +174,13 @@ export default function AcademicYearTable({ filters, searchTerm = "" }) {
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           onPageChange={handlePageChange}
+        />
+      )}
+
+      {selectedAcademic && (
+        <ViewAcademicModal
+          academicData={selectedAcademic}
+          onClose={handleCloseModal}
         />
       )}
     </div>

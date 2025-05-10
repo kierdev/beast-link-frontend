@@ -91,10 +91,6 @@ export default function ProgramTable({ filters, searchTerm = "" }) {
     setSelectedProgram(program);
   };
 
-  const handleEdit = (id) => {
-    console.log("Edit item", id);
-  };
-
   const handleDelete = async (id) => {
     const response = await fetch(`/api/programs/${id}`, {
       method: "DELETE",

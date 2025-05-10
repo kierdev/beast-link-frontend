@@ -1,9 +1,10 @@
-import { useState, useContext } from "react"
-import { Filter, Search } from "lucide-react"
+import { useState, useContext, useEffect } from "react";
+import { Filter, Search } from "lucide-react";
+import AdminAcademicYearTable from "../../../../components/academic-year-table-admin";
 import { GlobalDataContext } from "../../../../components/global-data-context";
-import AcademicYearTable from "../../../../components/academic-year-table"
+import AddAcademicButton from "../../../../components/add-academic-button";
 
-export default function AcademicYearPage() {
+export default function AdminAcademicYearPage() {
   const { academicYears, fetchAcademicYears } = useContext(GlobalDataContext);
   const [filters, setFilters] = useState({
     year: "",
@@ -53,6 +54,7 @@ export default function AcademicYearPage() {
             <Filter size={16} />
             <span>Filter</span>
           </button>
+          <AddAcademicButton />
         </div>
       </div>
 
@@ -82,7 +84,7 @@ export default function AcademicYearPage() {
         </div>
       )}
 
-      <AcademicYearTable filters={filters} searchTerm={searchTerm} />
+      <AdminAcademicYearTable filters={filters} searchTerm={searchTerm} />
     </div>
   );
 }
