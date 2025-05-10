@@ -1,0 +1,53 @@
+.container {
+  font-family: Arial, sans-serif;
+  margin: 20px 0;
+}
+
+.graph {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.line {
+  transition: all 0.3s ease;
+}
+
+.dot {
+  transition: all 0.3s ease;
+}
+
+.dot:hover {
+  r: 7;
+  opacity: 0.8;
+}
+
+.area {
+  transition: all 0.3s ease;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.gridLine {
+  shape-rendering: crispEdges;
+}
+
+.tick {
+  shape-rendering: crispEdges;
+}
+
+.tickLabel {
+  font-size: 12px;
+  fill: #666;
+}
+
+.axisLabel {
+  font-size: 12px;
+  fill: #666;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+}

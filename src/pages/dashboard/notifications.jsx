@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./dashboard.module.css"
+import { useState } from "react";
+import styles from "./dashboard.module.css";
 
-export default function NotificationsDropdown({ onClose }) {
+export default function NotificationsDropdown({}) {
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -33,7 +33,7 @@ export default function NotificationsDropdown({ onClose }) {
       time: "Yesterday",
       read: true,
     },
-  ])
+  ]);
 
   // Mark all notifications as read
   const markAllAsRead = () => {
@@ -41,16 +41,18 @@ export default function NotificationsDropdown({ onClose }) {
       notifications.map((notification) => ({
         ...notification,
         read: true,
-      })),
-    )
-  }
+      }))
+    );
+  };
 
   // Mark a single notification as read
   const markAsRead = (id) => {
     setNotifications(
-      notifications.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)),
-    )
-  }
+      notifications.map((notification) =>
+        notification.id === id ? { ...notification, read: true } : notification
+      )
+    );
+  };
 
   return (
     <div className={styles.notificationsDropdown}>
@@ -64,17 +66,21 @@ export default function NotificationsDropdown({ onClose }) {
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className={`${styles.notificationItem} ${notification.read ? styles.notificationRead : ""}`}
+            className={`${styles.notificationItem} ${
+              notification.read ? styles.notificationRead : ""
+            }`}
             onClick={() => markAsRead(notification.id)}
           >
             <div className={styles.notificationContent}>
               <h3 className={styles.notificationType}>{notification.type}</h3>
-              <div className={styles.notificationMessage}>{notification.message}</div>
+              <div className={styles.notificationMessage}>
+                {notification.message}
+              </div>
             </div>
             <div className={styles.notificationTime}>{notification.time}</div>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }

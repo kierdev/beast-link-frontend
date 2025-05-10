@@ -2,10 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import styles from "./dashboard.module.css";
-import Sidebar from "./sidebar";
 import CourseDetails from "./course-details";
 import NotificationsDropdown from "./notifications";
-
+import Sidebar from "../../components/side-bar/side-bar";
 export default function Applicant_Dashboard() {
   // State for search and filter functionality
   const [searchQuery, setSearchQuery] = useState("");

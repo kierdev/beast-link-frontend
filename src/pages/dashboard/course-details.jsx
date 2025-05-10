@@ -1,11 +1,11 @@
-"use client"
-import { useState } from "react"
-import styles from "./dashboard.module.css"
+"use client";
+import { useState } from "react";
+import styles from "./dashboard.module.css";
 
 export default function CourseDetails({ course, onClose }) {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState("overview");
 
-  if (!course) return null
+  if (!course) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -20,25 +20,33 @@ export default function CourseDetails({ course, onClose }) {
 
         <div className={styles.modalTabs}>
           <button
-            className={`${styles.modalTab} ${activeTab === "overview" ? styles.activeModalTab : ""}`}
+            className={`${styles.modalTab} ${
+              activeTab === "overview" ? styles.activeModalTab : ""
+            }`}
             onClick={() => setActiveTab("overview")}
           >
             Overview
           </button>
           <button
-            className={`${styles.modalTab} ${activeTab === "curriculum" ? styles.activeModalTab : ""}`}
+            className={`${styles.modalTab} ${
+              activeTab === "curriculum" ? styles.activeModalTab : ""
+            }`}
             onClick={() => setActiveTab("curriculum")}
           >
             Curriculum
           </button>
           <button
-            className={`${styles.modalTab} ${activeTab === "admission" ? styles.activeModalTab : ""}`}
+            className={`${styles.modalTab} ${
+              activeTab === "admission" ? styles.activeModalTab : ""
+            }`}
             onClick={() => setActiveTab("admission")}
           >
             Admission
           </button>
           <button
-            className={`${styles.modalTab} ${activeTab === "financial" ? styles.activeModalTab : ""}`}
+            className={`${styles.modalTab} ${
+              activeTab === "financial" ? styles.activeModalTab : ""
+            }`}
             onClick={() => setActiveTab("financial")}
           >
             Financial
@@ -75,7 +83,9 @@ export default function CourseDetails({ course, onClose }) {
                 <div className={styles.courseInfoItem}>
                   <span className={styles.infoIcon}>📍</span>
                   <span className={styles.infoLabel}>Location:</span>
-                  <span className={styles.infoValue}>Main Campus, Building A</span>
+                  <span className={styles.infoValue}>
+                    Main Campus, Building A
+                  </span>
                 </div>
                 <div className={styles.courseInfoItem}>
                   <span className={styles.infoIcon}>💰</span>
@@ -191,21 +201,30 @@ export default function CourseDetails({ course, onClose }) {
                   <div className={styles.processNumber}>1</div>
                   <div className={styles.processContent}>
                     <h4>Submit Application</h4>
-                    <p>Complete the online application form with your personal details.</p>
+                    <p>
+                      Complete the online application form with your personal
+                      details.
+                    </p>
                   </div>
                 </div>
                 <div className={styles.processStep}>
                   <div className={styles.processNumber}>2</div>
                   <div className={styles.processContent}>
                     <h4>Upload Documents</h4>
-                    <p>Submit your transcripts, recommendation letters, and other required documents.</p>
+                    <p>
+                      Submit your transcripts, recommendation letters, and other
+                      required documents.
+                    </p>
                   </div>
                 </div>
                 <div className={styles.processStep}>
                   <div className={styles.processNumber}>3</div>
                   <div className={styles.processContent}>
                     <h4>Entrance Exam</h4>
-                    <p>Take the admission exam to assess your aptitude and knowledge.</p>
+                    <p>
+                      Take the admission exam to assess your aptitude and
+                      knowledge.
+                    </p>
                   </div>
                 </div>
                 <div className={styles.processStep}>
@@ -219,7 +238,10 @@ export default function CourseDetails({ course, onClose }) {
                   <div className={styles.processNumber}>5</div>
                   <div className={styles.processContent}>
                     <h4>Decision</h4>
-                    <p>Receive admission decision within 2-3 weeks after completing all steps.</p>
+                    <p>
+                      Receive admission decision within 2-3 weeks after
+                      completing all steps.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -232,35 +254,57 @@ export default function CourseDetails({ course, onClose }) {
               <div className={styles.financialInfo}>
                 <div className={styles.financialItem}>
                   <span className={styles.financialLabel}>Tuition Fee:</span>
-                  <span className={styles.financialValue}>$12,500 per year</span>
+                  <span className={styles.financialValue}>
+                    $12,500 per year
+                  </span>
                 </div>
                 <div className={styles.financialItem}>
-                  <span className={styles.financialLabel}>Application Fee:</span>
-                  <span className={styles.financialValue}>$75 (non-refundable)</span>
+                  <span className={styles.financialLabel}>
+                    Application Fee:
+                  </span>
+                  <span className={styles.financialValue}>
+                    $75 (non-refundable)
+                  </span>
                 </div>
                 <div className={styles.financialItem}>
-                  <span className={styles.financialLabel}>Books & Supplies:</span>
-                  <span className={styles.financialValue}>$1,200 per year (estimated)</span>
+                  <span className={styles.financialLabel}>
+                    Books & Supplies:
+                  </span>
+                  <span className={styles.financialValue}>
+                    $1,200 per year (estimated)
+                  </span>
                 </div>
                 <div className={styles.financialItem}>
                   <span className={styles.financialLabel}>Housing:</span>
-                  <span className={styles.financialValue}>$8,000 - $12,000 per year</span>
+                  <span className={styles.financialValue}>
+                    $8,000 - $12,000 per year
+                  </span>
                 </div>
               </div>
 
-              <h3 className={styles.sectionHeading}>Scholarships & Financial Aid</h3>
+              <h3 className={styles.sectionHeading}>
+                Scholarships & Financial Aid
+              </h3>
               <div className={styles.scholarshipInfo}>
                 <div className={styles.scholarshipItem}>
                   <h4>Merit Scholarships</h4>
-                  <p>Available for students with outstanding academic achievements. Covers up to 50% of tuition.</p>
+                  <p>
+                    Available for students with outstanding academic
+                    achievements. Covers up to 50% of tuition.
+                  </p>
                 </div>
                 <div className={styles.scholarshipItem}>
                   <h4>Need-Based Aid</h4>
-                  <p>Financial assistance based on demonstrated financial need.</p>
+                  <p>
+                    Financial assistance based on demonstrated financial need.
+                  </p>
                 </div>
                 <div className={styles.scholarshipItem}>
                   <h4>Work-Study Programs</h4>
-                  <p>Opportunities to work on campus to help cover educational expenses.</p>
+                  <p>
+                    Opportunities to work on campus to help cover educational
+                    expenses.
+                  </p>
                 </div>
               </div>
             </>
@@ -275,5 +319,5 @@ export default function CourseDetails({ course, onClose }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,13 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./dashboard.module.css";
-import Sidebar from "./sidebar";
 import NotificationsDropdown from "./notifications";
+import Sidebar from "../../components/side-bar/side-bar";
+import { getProgramStatistics } from "../../data/dashboard-service";
+import { toCamelCase } from "../../utils/casing";
+import { LoadingSpinner } from "../../components/loading/loading";
+import { Users, UserCheck, UserX, Book } from "lucide-react";
+import { toPercent } from "../../utils/numberUtils";
+import PieChart from "./components/pie-chart/pie-chart";
 
 export default function Chairperson_Dashboard() {
+  const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);
+  const [error, setError] = useState(null);
+  const [pieChartData, setPieChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getProgramStatistics();
+        const transformedData = toCamelCase(response);
+        console.log("Transformed data:", transformedData);
+        setData(transformedData);
+      } catch (err) {
+        console.error("Error fetching admin dashboard data:", err);
+        setError(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setPieChartData([
+        {
+          label: "Failed",
+          value: toPercent(data.totalApplicants, data.failedApplicants),
+          color: "#FF0000",
+        },
+        {
+          label: "Passed",
+          value: toPercent(data.totalApplicants, data.passedApplicants),
+          color: "#00ff00",
+        },
+        {
+          label: "Pending",
+          value: toPercent(data.totalApplicants, data.pendingApplicants),
+          color: "#ffa500",
+        },
+      ]);
+    }
+  }, [data]);
+
+  if (error) {
+    return <div>Error loading dashboard: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className={styles.dashboardLayout}>
@@ -49,10 +104,26 @@ export default function Chairperson_Dashboard() {
 
           {/* Stats Cards */}
           <div className={styles.statsGrid}>
-            <StatCard title="Total Applicants" value="5" icon="👥" />
-            <StatCard title="Passed Applicants" value="4" icon="🎓" />
-            <StatCard title="Failed Applicants" value="0" icon="❌" />
-            <StatCard title="Pending Applications" value="1" icon="📚" />
+            <StatCard
+              title="Total Applicants"
+              value={data.totalApplicants}
+              icon={<Users />}
+            />
+            <StatCard
+              title="Passed Applicants"
+              value={data.passedApplicants}
+              icon={<UserCheck />}
+            />
+            <StatCard
+              title="Failed Applicants"
+              value={data.failedApplicants}
+              icon={<UserX />}
+            />
+            <StatCard
+              title="Pending Applications"
+              value={data.pendingApplicants}
+              icon={<Book />}
+            />
           </div>
 
           {/* Navigation Tabs */}
@@ -99,30 +170,7 @@ export default function Chairperson_Dashboard() {
               <p className={styles.chartSubtitle}>
                 Distribution of Information Technology application statuses
               </p>
-              <div className={styles.chartContent}>
-                <div className={styles.pieChart}>
-                  <div className={styles.pieChartLegend}>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.passedColor}`}
-                      ></span>
-                      <span>Passed (80%)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.failedColor}`}
-                      ></span>
-                      <span>Failed (0%)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.pendingColor}`}
-                      ></span>
-                      <span>Pending (20%)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <PieChart data={pieChartData} width={250} height={250} />
             </div>
 
             {/* Exam Score Distribution */}

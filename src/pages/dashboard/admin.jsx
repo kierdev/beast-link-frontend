@@ -1,13 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
-import Sidebar from "./sidebar";
+import { Users, UserCheck, UserX, Book } from "lucide-react";
 import NotificationsDropdown from "./notifications";
+import { getAdminDashboard } from "../../data/dashboard-service";
+import { toCamelCase } from "../../utils/casing";
+import { LoadingSpinner } from "../../components/loading/loading";
+import Sidebar from "../../components/side-bar/side-bar";
+import PieChart from "./components/pie-chart/pie-chart";
+import BarChart from "./components/bar-chart/bar-chart";
+import LineChart from "./components/line-chart/line-chart";
+import { toPercent } from "../../utils/numberUtils";
 
 export default function Admin_Dashboard() {
+  const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);
+  const [error, setError] = useState(null);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [barChartData, setBarChartData] = useState([]);
+  const [lineChartData, setLineChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAdminDashboard();
+        const transformedData = toCamelCase(response);
+        console.log("Transformed data:", transformedData);
+        setData(transformedData);
+      } catch (err) {
+        console.error("Error fetching admin dashboard data:", err);
+        setError(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setPieChartData([
+        {
+          label: "Failed",
+          value: toPercent(data.totalApplicants, data.failedApplicants),
+          color: "#FF0000",
+        },
+        {
+          label: "Passed",
+          value: toPercent(data.totalApplicants, data.passedApplicants),
+          color: "#00ff00",
+        },
+        {
+          label: "Pending",
+          value: toPercent(data.totalApplicants, data.pendingApplicants),
+          color: "#ffa500",
+        },
+      ]);
+      setBarChartData([
+        { label: "BSIT", value: 65, color: "#FF6384" },
+        { label: "BSCS", value: 59, color: "#36A2EB" },
+        { label: "BSCE", value: 80, color: "#FFCE56" },
+        { label: "BSA", value: 56, color: "#4BC0C0" },
+        { label: "BSSW", value: 40, color: "#9966FF" },
+      ]);
+
+      setLineChartData([
+        { label: "Jan", value: 65 },
+        { label: "Feb", value: 59 },
+        { label: "Mar", value: 80 },
+        { label: "Apr", value: 81 },
+        { label: "May", value: 56 },
+        { label: "Jun", value: 55 },
+        { label: "Jul", value: 40 },
+      ]);
+    }
+  }, [data]);
+
+  if (error) {
+    return <div>Error loading dashboard: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className={styles.dashboardLayout}>
@@ -35,10 +111,26 @@ export default function Admin_Dashboard() {
         <div className={styles.dashboardContent}>
           {/* Stats Cards */}
           <div className={styles.statsGrid}>
-            <StatCard title="Total Applicants" value="17" icon="👥" />
-            <StatCard title="Passed Applicants" value="12" icon="🎓" />
-            <StatCard title="Failed Applicants" value="2" icon="❌" />
-            <StatCard title="Total Courses" value="9" icon="📚" />
+            <StatCard
+              title="Total Applicants"
+              value={data.totalApplicants}
+              icon={<Users />}
+            />
+            <StatCard
+              title="Passed Applicants"
+              value={data.passedApplicants}
+              icon={<UserCheck />}
+            />
+            <StatCard
+              title="Failed Applicants"
+              value={data.failedApplicants}
+              icon={<UserX />}
+            />
+            <StatCard
+              title="Total Courses"
+              value={data.totalCourses}
+              icon={<Book />}
+            />
           </div>
 
           {/* Navigation Tabs */}
@@ -72,36 +164,7 @@ export default function Admin_Dashboard() {
           {/* Main Content */}
           <div className={styles.contentGrid}>
             {/* Application Status */}
-            <div className={styles.chartCard}>
-              <h2 className={styles.chartTitle}>Application Status</h2>
-              <p className={styles.chartSubtitle}>
-                Distribution of application statuses
-              </p>
-              <div className={styles.chartContent}>
-                <div className={styles.pieChart}>
-                  <div className={styles.pieChartLegend}>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.passedColor}`}
-                      ></span>
-                      <span>Passed (70%)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.failedColor}`}
-                      ></span>
-                      <span>Failed (12%)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                      <span
-                        className={`${styles.legendColor} ${styles.pendingColor}`}
-                      ></span>
-                      <span>Pending (18%)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <PieChart data={pieChartData} width={250} height={250} />
 
             {/* Applicants by Course */}
             <div className={styles.chartCard}>
@@ -109,33 +172,13 @@ export default function Admin_Dashboard() {
               <p className={styles.chartSubtitle}>
                 Number of applicants per course
               </p>
-              <div className={styles.chartContent}>
-                <div className={styles.barChart}>
-                  <div className={styles.barChartBar} style={{ height: "40%" }}>
-                    <span className={styles.barLabel}>CS</span>
-                    <span className={styles.barValue}>2</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "60%" }}>
-                    <span className={styles.barLabel}>CE</span>
-                    <span className={styles.barValue}>3</span>
-                  </div>
-                  <div
-                    className={styles.barChartBar}
-                    style={{ height: "100%" }}
-                  >
-                    <span className={styles.barLabel}>IT</span>
-                    <span className={styles.barValue}>5</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "20%" }}>
-                    <span className={styles.barLabel}>EE</span>
-                    <span className={styles.barValue}>1</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "20%" }}>
-                    <span className={styles.barLabel}>SE</span>
-                    <span className={styles.barValue}>1</span>
-                  </div>
-                </div>
-              </div>
+              <BarChart
+                data={barChartData}
+                width={600}
+                height={300}
+                barColor="#4BC0C0"
+                showValues={true}
+              />
             </div>
 
             {/* Application Trends */}
@@ -144,24 +187,15 @@ export default function Admin_Dashboard() {
               <p className={styles.chartSubtitle}>
                 Monthly application submissions
               </p>
-              <div className={styles.chartContent}>
-                <div className={styles.lineChart}>
-                  <div className={styles.lineChartLabels}>
-                    <span>Jan</span>
-                    <span>Feb</span>
-                    <span>Mar</span>
-                    <span>Apr</span>
-                    <span>May</span>
-                    <span>Jun</span>
-                    <span>Jul</span>
-                    <span>Aug</span>
-                    <span>Sep</span>
-                    <span>Oct</span>
-                    <span>Nov</span>
-                    <span>Dec</span>
-                  </div>
-                </div>
-              </div>
+              <LineChart
+                data={lineChartData}
+                width={1000}
+                height={500}
+                lineColor="#FF6384"
+                dotColor="#36A2EB"
+                showArea={true}
+                gridLines={true}
+              />
             </div>
           </div>
         </div>

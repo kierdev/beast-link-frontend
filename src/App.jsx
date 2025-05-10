@@ -15,7 +15,7 @@ export default function App() {
           element={<Chairperson_Dashboard />}
         />
         <Route path="/dashboard/faculty" element={<Faculty_Dashboard />} />
-        <Route path="/dashboard/admin" element={<Admin_Dashboard />} />
+        <Route path="/dashboard/applicant" element={<Applicant_Dashboard />} />
       </Routes>
     </Router>
   );

@@ -2,8 +2,17 @@
 
 import { useState } from "react";
 import styles from "./dashboard.module.css";
-import Sidebar from "./sidebar";
 import NotificationsDropdown from "./notifications";
+import Sidebar from "../../components/side-bar/side-bar";
+import {
+  Calendar,
+  CheckCircle,
+  XCircle,
+  Edit2,
+  Clock,
+  MapPin,
+  Pen,
+} from "lucide-react";
 
 export default function Faculty_Dashboard() {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -35,10 +44,18 @@ export default function Faculty_Dashboard() {
         <div className={styles.dashboardContent}>
           {/* Stats Cards */}
           <div className={styles.statsGrid}>
-            <StatCard title="Today's Interviews" value="0" icon="📅" />
-            <StatCard title="Passed Interviews" value="3" icon="✅" />
-            <StatCard title="Failed Interviews" value="1" icon="❌" />
-            <StatCard title="Pending Remarks" value="1" icon="📝" />
+            <StatCard
+              title="Today's Interviews"
+              value="0"
+              icon={<Calendar />}
+            />
+            <StatCard
+              title="Passed Interviews"
+              value="3"
+              icon={<CheckCircle />}
+            />
+            <StatCard title="Failed Interviews" value="1" icon={<XCircle />} />
+            <StatCard title="Pending Remarks" value="1" icon={<Edit2 />} />
           </div>
 
           {/* Navigation Tabs */}
@@ -134,19 +151,19 @@ function InterviewCard({ name, date, time, program, location }) {
       </div>
       <div className={styles.interviewDetails}>
         <div className={styles.interviewDetail}>
-          <span className={styles.detailIcon}>📅</span>
+          <Calendar className={styles.detailIcon} />
           <span>{date}</span>
         </div>
         <div className={styles.interviewDetail}>
-          <span className={styles.detailIcon}>⏰</span>
+          <Clock className={styles.detailIcon} />
           <span>{time}</span>
         </div>
         <div className={styles.interviewDetail}>
-          <span className={styles.detailIcon}>🎓</span>
+          <Pen className={styles.detailIcon} />
           <span>{program}</span>
         </div>
         <div className={styles.interviewDetail}>
-          <span className={styles.detailIcon}>📍</span>
+          <MapPin className={styles.detailIcon} />
           <span>{location}</span>
         </div>
       </div>
