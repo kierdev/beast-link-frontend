@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./dashboard.module.css";
-import NotificationsDropdown from "./notifications";
-import Sidebar from "../../components/side-bar/side-bar";
-import { getProgramStatistics } from "../../data/dashboard-service";
-import { toCamelCase } from "../../utils/casing";
-import { LoadingSpinner } from "../../components/loading/loading";
+import styles from "./chairperson.module.css";
+import NotificationsDropdown from "../../components/notifications/notifications";
+import Sidebar from "../../../../components/side-bar/side-bar";
+import { getProgramStatistics } from "../../../../data/dashboard-service";
+import { toCamelCase } from "../../../../utils/casing";
+import { LoadingSpinner } from "../../../../components/loading/loading";
 import { Users, UserCheck, UserX, Book } from "lucide-react";
-import { toPercent } from "../../utils/numberUtils";
-import PieChart from "./components/pie-chart/pie-chart";
+import { toPercent } from "../../../../utils/numberUtils";
+import PieChart from "../../components/pie-chart/pie-chart";
 
-export default function Chairperson_Dashboard() {
+export default function ChairpersonDashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);

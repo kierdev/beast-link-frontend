@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./dashboard.module.css";
+import styles from "./notification.module.css";
 
-export default function NotificationsDropdown({}) {
+export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState([
     {
       id: 1,

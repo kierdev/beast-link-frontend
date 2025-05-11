@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "https://beast-link-backend-git-development-knthlxs-projects.vercel.app/api/api";
 
 export async function getApplicantDashboard(applicantId) {
   const response = await fetch(

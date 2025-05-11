@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "./dashboard.module.css";
+import styles from "./course-details.module.css";
 
 export default function CourseDetails({ course, onClose }) {
   const [activeTab, setActiveTab] = useState("overview");

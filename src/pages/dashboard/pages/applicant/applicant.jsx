@@ -1,11 +1,22 @@
-"use client";
-
 import { useState, useRef, useEffect } from "react";
-import styles from "./dashboard.module.css";
-import CourseDetails from "./course-details";
-import NotificationsDropdown from "./notifications";
-import Sidebar from "../../components/side-bar/side-bar";
-export default function Applicant_Dashboard() {
+import styles from "./applicant.module.css";
+import CourseDetails from "../../components/course-details/course-details";
+import NotificationsDropdown from "../../components/notifications/notifications";
+import Sidebar from "../../../../components/side-bar/side-bar";
+import {
+  Bell,
+  Search,
+  Calendar,
+  User,
+  Globe,
+  Monitor,
+  Users,
+  Building,
+  GraduationCap,
+  DollarSign,
+} from "lucide-react";
+
+export default function ApplicantDashboard() {
   // State for search and filter functionality
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -49,7 +60,7 @@ export default function Applicant_Dashboard() {
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
-      icon: "💻",
+      icon: <Monitor />,
     },
     {
       id: 2,
@@ -60,7 +71,7 @@ export default function Applicant_Dashboard() {
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
-      icon: "🔍",
+      icon: <Search />,
     },
     {
       id: 3,
@@ -71,7 +82,7 @@ export default function Applicant_Dashboard() {
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
-      icon: "🖥️",
+      icon: <Monitor />,
     },
     {
       id: 4,
@@ -82,7 +93,7 @@ export default function Applicant_Dashboard() {
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
-      icon: "📊",
+      icon: <DollarSign />,
     },
     {
       id: 5,
@@ -93,7 +104,7 @@ export default function Applicant_Dashboard() {
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
-      icon: "🌐",
+      icon: <Globe />,
     },
     {
       id: 6,
@@ -104,7 +115,7 @@ export default function Applicant_Dashboard() {
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
-      icon: "👥",
+      icon: <Users />,
     },
     {
       id: 7,
@@ -115,7 +126,7 @@ export default function Applicant_Dashboard() {
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
-      icon: "🏫",
+      icon: <Building />,
     },
     {
       id: 8,
@@ -126,7 +137,7 @@ export default function Applicant_Dashboard() {
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
-      icon: "💰",
+      icon: <DollarSign />,
     },
     {
       id: 9,
@@ -137,7 +148,7 @@ export default function Applicant_Dashboard() {
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
-      icon: "🎓",
+      icon: <GraduationCap />,
     },
   ];
 
@@ -197,7 +208,8 @@ export default function Applicant_Dashboard() {
                 className={styles.notificationIcon}
                 onClick={toggleNotifications}
               >
-                <span className={styles.notificationBadge}>2</span>🔔
+                <span className={styles.notificationBadge}>2</span>
+                <Bell />
               </div>
               {showNotifications && (
                 <div ref={notificationsRef}>
@@ -272,7 +284,9 @@ export default function Applicant_Dashboard() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className={styles.searchInput}
                 />
-                <span className={styles.searchIcon}>🔍</span>
+                <span className={styles.searchIcon}>
+                  <Search />
+                </span>
               </div>
             </div>
 
@@ -305,7 +319,9 @@ export default function Applicant_Dashboard() {
                       <span className={styles.collegeTag}>
                         {course.college}
                       </span>
-                      <span className={styles.dateTag}>📅 {course.date}</span>
+                      <span className={styles.dateTag}>
+                        <Calendar /> {course.date}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -319,7 +335,9 @@ export default function Applicant_Dashboard() {
               Learn Effectively With BeastLink College!
             </h2>
             <div className={styles.statsContent}>
-              <div className={styles.statsIcon}>👨‍🎓</div>
+              <div className={styles.statsIcon}>
+                <User />
+              </div>
               <div className={styles.statsInfo}>
                 <div className={styles.statsLabel}>Student</div>
                 <div className={styles.statsValue}>50,000+</div>

@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./dashboard.module.css";
+import styles from "./admin.module.css";
 import { Users, UserCheck, UserX, Book } from "lucide-react";
-import NotificationsDropdown from "./notifications";
-import { getAdminDashboard } from "../../data/dashboard-service";
-import { toCamelCase } from "../../utils/casing";
-import { LoadingSpinner } from "../../components/loading/loading";
-import Sidebar from "../../components/side-bar/side-bar";
-import PieChart from "./components/pie-chart/pie-chart";
-import BarChart from "./components/bar-chart/bar-chart";
-import LineChart from "./components/line-chart/line-chart";
-import { toPercent } from "../../utils/numberUtils";
+import NotificationsDropdown from "../../components/notifications/notifications";
+import { getAdminDashboard } from "../../../../data/dashboard-service";
+import { toCamelCase } from "../../../../utils/casing";
+import { LoadingSpinner } from "../../../../components/loading/loading";
+import Sidebar from "../../../../components/side-bar/side-bar";
+import PieChart from "../../components/pie-chart/pie-chart";
+import BarChart from "../../components/bar-chart/bar-chart";
+import LineChart from "../../components/line-chart/line-chart";
+import { toPercent } from "../../../../utils/numberUtils";
 
-export default function Admin_Dashboard() {
+export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);
