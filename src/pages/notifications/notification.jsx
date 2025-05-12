@@ -16,7 +16,7 @@ export default function Notification() {
         <div className={styles.menu}>
           <a href="dashboard" className={styles.menuItem}><i className="fas fa-home"></i> Dashboard</a>
           <a href="#" className={styles.menuItem}><i className="far fa-calendar-alt"></i> Events</a>
-          <a className={`${styles.menuItem} ${styles.activeMenuItem}`}><i className="fas fa-user-graduate"></i> Students/Classes</a>
+          <a href="applicants" className={styles.menuItem}><i className="fas fa-user-graduate"></i> Students/Classes</a>
           <a href="#" className={styles.menuItem}><i className="fas fa-gear"></i> Settings and Profile</a>
           <a href="#" className={styles.menuItem}><i className="far fa-clipboard"></i> Exams</a>
         </div>
