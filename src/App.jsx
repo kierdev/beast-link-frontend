@@ -3,6 +3,7 @@ import Home from "./pages/home/home";
 import Dashboard from "./pages/dashboard/dashboard";
 import AdmissionCriteria from "./pages/admission-criteria/admissionCriteria";
 import Applicants from "./pages/applicants/applicants";
+import Notification from "./pages/notifications/notification";
 export default function App() {
   return (
     <Router>
@@ -11,6 +12,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admission-criteria" element={<AdmissionCriteria />} />
         <Route path="/applicants" element={<Applicants />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </Router>
   );

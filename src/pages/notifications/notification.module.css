@@ -1,4 +1,4 @@
-/* Dashboard.module.css */
+/* Applicants.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
 .kumbh-sans {
     font-family: "Kumbh Sans", sans-serif;
@@ -106,103 +106,21 @@
 /* Main Content Styles */
 .main {
   flex: 1;
-  padding: 30px;
 }
 
 .topBar {
+  padding: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.searchFilterContainer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.filterWrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.filterButton {
-  padding: 0 15px;
-  height: 50px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-  color: black;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.filterButton:hover {
-  background: #f5f5f5;
-}
-
-.filterDropdown {
-  position: absolute;
-  top: calc(100% + 5px);
-  left: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  min-width: 200px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 100;
-  display: none;
-}
-
-.filterDropdown.show {
-  display: block;
-}
-
-.filterOption {
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filterOption:hover {
-  background: #f5f5f5;
-  border-radius: 4px;
-}
-
-.searchBox {
-  position: relative;
-  padding-right: 55px;
-}
-
-.searchInput {
-  padding: 8px 15px 8px 40px;
-  height: 50px;
-  width: 130vh;
-  border-radius: 8px;
-  border: 1px solid #ccc;
   background-color: white;
-  color: black;
 }
 
-.searchBox i {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #777;
-}
-
-.notification i {
-  color: #282828;
-  font-size: 20px;
-  margin-right: 15px;
-  padding-right: 30px;
+.topBar h2{
+    font-family: "Kumbh Sans";
+    font-size: 30px;
+    font-weight: 400;
 }
 
 .logout {
@@ -236,63 +154,4 @@
 .content {
   display: flex;
   gap: 20px;
-}
-
-.leftPanel {
-  flex: 2;
-}
-
-.rightPanel {
-  flex: 1;
-}
-
-.card {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.courseItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fafafa;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.courseCode {
-  padding: 5px 10px;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.cs { background-color: #f4b400; }
-.coe { background-color: #34a853; }
-.it { background-color: #4285f4; }
-.a { background-color: #ea4335; }
-.hm { background-color: #fbbc05; }
-
-.statusPending {
-  color: orange;
-  font-weight: bold;
-}
-
-.circle {
-  width: 150px;
-  height: 150px;
-  background: conic-gradient(#4caf50 0% 75%, #ddd 75% 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 10px;
-  font-size: 22px;
-  font-weight: bold;
-  flex-direction: column;
 }

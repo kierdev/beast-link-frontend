@@ -28,7 +28,7 @@ export default function Dashboard() {
           <a href="#" className={styles.menuItem}><i className="far fa-clipboard"></i> Exams</a>
         </div>
       </div>
-      
+
       {/* Content */}
       <div className={styles.main}>
         <div className={styles.topBar}>
@@ -58,7 +58,7 @@ export default function Dashboard() {
 
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className={styles.notification}>
-              <a href="notification.html"><i className="far fa-bell"></i></a>
+              <a href="notification"><i className="far fa-bell"></i></a>
             </div>
             <div className={styles.logout}>
               <button className={styles.logoutButton}>Log out</button>

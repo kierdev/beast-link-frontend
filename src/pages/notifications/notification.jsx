@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import styles from './Applicants.module.css';
+import styles from './Notification.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import logo from '../../assets/logo.png'
 
-export default function Applicants() {
+export default function Notification() {
   const [filterOpen, setFilterOpen] = useState(false);
-
+  
   return (
     <div className={styles.app}>
       {/* Sidebar */}
@@ -25,34 +25,8 @@ export default function Applicants() {
       {/* Content */}
       <div className={styles.main}>
         <div className={styles.topBar}>
-          <div className={styles.searchFilterContainer}>
-            <div className={styles.filterWrapper}>
-              <button 
-                className={styles.filterButton} 
-                onClick={() => setFilterOpen(!filterOpen)}
-              >
-                Filters <i className="fas fa-chevron-down"></i>
-              </button>
-              <div className={`${styles.filterDropdown} ${filterOpen ? styles.show : ''}`}>
-                {['Mathematics', 'Science', 'History', 'Language'].map((subject) => (
-                  <div key={subject} className={styles.filterOption}>
-                    <input type="checkbox" id={`filter-${subject.toLowerCase()}`} />
-                    <label htmlFor={`filter-${subject.toLowerCase()}`}>{subject}</label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className={styles.searchBox}>
-              <input type="text" placeholder="Search Courses" className={styles.searchInput} />
-              <i className="fas fa-search"></i>
-            </div>
-          </div>
-
+        <h2>Notifications</h2>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div className={styles.notification}>
-              <a href="notification"><i className="far fa-bell"></i></a>
-            </div>
             <div className={styles.logout}>
               <button className={styles.logoutButton}>Log out</button>
             </div>
