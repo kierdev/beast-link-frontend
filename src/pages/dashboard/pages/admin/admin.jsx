@@ -4,14 +4,23 @@ import { useEffect, useState } from "react";
 import styles from "./admin.module.css";
 import { Users, UserCheck, UserX, Book } from "lucide-react";
 import NotificationsDropdown from "../../components/notifications/notifications";
-import { getAdminDashboard } from "../../../../data/dashboard-service";
-import { toCamelCase } from "../../../../utils/casing";
 import { LoadingSpinner } from "../../../../components/loading/loading";
 import Sidebar from "../../../../components/side-bar/side-bar";
 import PieChart from "../../components/pie-chart/pie-chart";
 import BarChart from "../../components/bar-chart/bar-chart";
 import LineChart from "../../components/line-chart/line-chart";
 import { toPercent } from "../../../../utils/numberUtils";
+
+// Mock data service
+const MockDataService = {
+  getAdminDashboard: () => ({
+    totalApplicants: 245,
+    passedApplicants: 120,
+    failedApplicants: 75,
+    pendingApplicants: 50,
+    totalCourses: 8
+  })
+};
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
@@ -23,14 +32,15 @@ export default function AdminDashboard() {
   const [lineChartData, setLineChartData] = useState([]);
 
   useEffect(() => {
+    // Simulate API call with timeout
     const fetchData = async () => {
       try {
-        const response = await getAdminDashboard();
-        const transformedData = toCamelCase(response);
-        console.log("Transformed data:", transformedData);
-        setData(transformedData);
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const response = MockDataService.getAdminDashboard();
+        setData(response);
       } catch (err) {
-        console.error("Error fetching admin dashboard data:", err);
+        console.error("Error loading mock data:", err);
         setError(err);
       }
     };

@@ -6,23 +6,6 @@
     sans-serif;
 }
 
-.logoContainer {
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.universityName {
-  text-align: center;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
 /* Main Content */
 .dashboardMain {
   flex: 1;
@@ -92,35 +75,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-/* Info Alert */
-.infoAlert {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background-color: #fff8e1;
-  border: 1px solid #ffecb3;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.infoAlertIcon {
-  font-size: 24px;
-  color: #ff9800;
-}
-
-.infoAlertTitle {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0 0 4px 0;
-  color: #333;
-}
-
-.infoAlertText {
-  font-size: 14px;
-  color: #555;
-  margin: 0;
 }
 
 /* Progress Tracker */
@@ -200,7 +154,7 @@
 }
 
 .sectionTitle {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
   margin: 0;
@@ -208,8 +162,7 @@
 
 /* Search Bar */
 .searchBar {
-  position: absolute;
-  right: 50px;
+  position: relative;
 }
 
 .searchInput {
@@ -268,4 +221,252 @@
   gap: 20px;
 }
 
-/* Additional styles (course cards, stats, modals, tables, etc.) continue in same structure... */
+/* Course Card */
+.courseCard {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.courseIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.technology {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.education {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.business {
+  background-color: #fff8e1;
+  color: #ff8f00;
+}
+
+.courseContent {
+  flex: 1;
+}
+
+.courseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.courseTitle {
+  font-weight: bold;
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.viewDetailsLink {
+  color: #2196f3;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.courseCount {
+  color: #757575;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.courseDescription {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.courseFooter {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.collegeTag {
+  color: #2196f3;
+}
+
+.dateTag {
+  color: #ff9800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Stats Card */
+.statsCard {
+  background-color: #1b5e20;
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.statsTitle {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.statsContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.statsIcon {
+  font-size: 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statsInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statsLabel {
+  font-size: 16px;
+}
+
+.statsValue {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Status Tabs */
+.statusTabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.statusTab {
+  padding: 8px 16px;
+  color: black;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.activeStatusTab {
+  font-weight: bold;
+}
+
+/* Status Table */
+.statusTable {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: flex;
+  background-color: #f9f9f9;
+  padding: 12px 15px;
+  font-weight: 500;
+  color: #555;
+}
+
+.tableHeaderCell {
+  flex: 1;
+}
+
+.tableHeaderCell:last-child {
+  text-align: right;
+}
+
+.tableRow {
+  display: flex;
+  padding: 12px 15px;
+  border-top: 1px solid #eee;
+}
+
+.tableCell {
+  flex: 1;
+}
+
+.tableCell:last-child {
+  text-align: right;
+}
+
+.applicationName {
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.applicationDate {
+  font-size: 14px;
+  color: #757575;
+}
+
+.pendingBadge {
+  background-color: #fff3e0;
+  color: #e65100;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* Form Card */
+.formCard {
+  background-color: #212121;
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.formTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.formDescription {
+  font-size: 14px;
+  color: #bdbdbd;
+  margin-bottom: 15px;
+}
+
+.viewButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.viewButton:hover {
+  background-color: #388e3c;
+}

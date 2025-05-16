@@ -4,12 +4,21 @@ import { useState, useEffect } from "react";
 import styles from "./chairperson.module.css";
 import NotificationsDropdown from "../../components/notifications/notifications";
 import Sidebar from "../../../../components/side-bar/side-bar";
-import { getProgramStatistics } from "../../../../data/dashboard-service";
-import { toCamelCase } from "../../../../utils/casing";
 import { LoadingSpinner } from "../../../../components/loading/loading";
 import { Users, UserCheck, UserX, Book } from "lucide-react";
 import { toPercent } from "../../../../utils/numberUtils";
 import PieChart from "../../components/pie-chart/pie-chart";
+
+// Mock data service
+const MockDataService = {
+  getProgramStatistics: () => ({
+    totalApplicants: 125,
+    passedApplicants: 75,
+    failedApplicants: 30,
+    pendingApplicants: 20,
+    department: "Information Technology"
+  })
+};
 
 export default function ChairpersonDashboard() {
   const [data, setData] = useState(null);
@@ -21,12 +30,12 @@ export default function ChairpersonDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProgramStatistics();
-        const transformedData = toCamelCase(response);
-        console.log("Transformed data:", transformedData);
-        setData(transformedData);
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const response = MockDataService.getProgramStatistics();
+        setData(response);
       } catch (err) {
-        console.error("Error fetching admin dashboard data:", err);
+        console.error("Error loading dashboard data:", err);
         setError(err);
       }
     };
@@ -70,7 +79,7 @@ export default function ChairpersonDashboard() {
       <div className={styles.dashboardMain}>
         <div className={styles.dashboardHeader}>
           <h1 className={styles.dashboardTitle}>
-            Information Technology Department Dashboard
+            {data.department} Department Dashboard
           </h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Department Chairperson</span>
@@ -96,8 +105,7 @@ export default function ChairpersonDashboard() {
             <div className={styles.infoAlertContent}>
               <h2 className={styles.infoAlertTitle}>Department View</h2>
               <p className={styles.infoAlertText}>
-                You are viewing data for the{" "}
-                <strong>Information Technology</strong> department only
+                You are viewing data for the <strong>{data.department}</strong> department only
               </p>
             </div>
           </div>
@@ -168,7 +176,7 @@ export default function ChairpersonDashboard() {
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Application Status</h2>
               <p className={styles.chartSubtitle}>
-                Distribution of Information Technology application statuses
+                Distribution of {data.department} application statuses
               </p>
               <PieChart data={pieChartData} width={250} height={250} />
             </div>
@@ -177,7 +185,7 @@ export default function ChairpersonDashboard() {
             <div className={styles.chartCard}>
               <h2 className={styles.chartTitle}>Exam Score Distribution</h2>
               <p className={styles.chartSubtitle}>
-                Information Technology applicants by exam score ranges
+                {data.department} applicants by exam score ranges
               </p>
               <div className={styles.chartContent}>
                 <div className={styles.barChart}>

@@ -16,10 +16,122 @@ import {
   DollarSign,
 } from "lucide-react";
 
+// Mock data service
+const MockDataService = {
+  getCourses: () => [
+    {
+      id: 1,
+      title: "Computer Science",
+      count: "5,000+ Courses",
+      description: "Covers algorithms, programming, and problem-solving, essential for computing and software development.",
+      college: "College of Technology",
+      date: "Apr 25, 2025",
+      category: "technology",
+      icon: <Monitor />,
+    },
+    {
+      id: 2,
+      title: "Special Education",
+      count: "5,000+ Courses",
+      description: "Equips teachers with strategies to support students with disabilities and special needs, promoting inclusive and adaptive learning.",
+      college: "College of Education",
+      date: "Apr 25, 2025",
+      category: "education",
+      icon: <Search />,
+    },
+    {
+      id: 3,
+      title: "Computer Engineering",
+      count: "5,000+ Courses",
+      description: "Covers hardware, software, and embedded systems, essential for designing and optimizing computing technologies.",
+      college: "College of Technology",
+      date: "Apr 25, 2025",
+      category: "technology",
+      icon: <Monitor />,
+    },
+    {
+      id: 4,
+      title: "Accountancy",
+      count: "5,000+ Courses",
+      description: "Prepares students for careers in accounting, auditing, and taxation, with a strong focus on financial reporting and CPA licensure.",
+      college: "College of Business and Accountancy",
+      date: "Apr 25, 2025",
+      category: "business",
+      icon: <DollarSign />,
+    },
+    {
+      id: 5,
+      title: "Information Technology",
+      count: "5,000+ Courses",
+      description: "Covers networking, cybersecurity, and software development, essential for IT support and system management.",
+      college: "College of Technology",
+      date: "Apr 25, 2025",
+      category: "technology",
+      icon: <Globe />,
+    },
+    {
+      id: 6,
+      title: "Human Resource Development Management",
+      count: "5,000+ Courses",
+      description: "Equips students with skills in recruitment, training, and labor relations, essential for effective workforce management and organizational development.",
+      college: "College of Business and Accountancy",
+      date: "Apr 25, 2025",
+      category: "business",
+      icon: <Users />,
+    },
+    {
+      id: 7,
+      title: "Elementary Education",
+      count: "5,000+ Courses",
+      description: "Prepares future teachers for primary education, focusing on child development, pedagogy, and subject-specific teaching for Grades 1-6.",
+      college: "College of Education",
+      date: "Apr 25, 2025",
+      category: "education",
+      icon: <Building />,
+    },
+    {
+      id: 8,
+      title: "Financial Management",
+      count: "5,000+ Courses",
+      description: "Teaches financial analysis, investment strategies, and risk management, preparing students for careers in banking, corporate finance, and investment planning.",
+      college: "College of Business and Accountancy",
+      date: "Apr 25, 2025",
+      category: "business",
+      icon: <DollarSign />,
+    },
+    {
+      id: 9,
+      title: "Secondary Education",
+      count: "5,000+ Courses",
+      description: "Trains educators to teach in junior and senior high school (Grades 7-12), specializing in subjects like Math, Science, English, or Social Studies.",
+      college: "College of Education",
+      date: "Apr 25, 2025",
+      category: "education",
+      icon: <GraduationCap />,
+    },
+  ],
+  getApplications: () => [
+    {
+      id: 1,
+      name: "Computer Science",
+      date: "2025-02-15",
+      status: "pending",
+    },
+    {
+      id: 2,
+      name: "Human Resource Development Management",
+      date: "2025-02-20",
+      status: "pending",
+    },
+  ]
+};
+
 export default function ApplicantDashboard() {
   // State for search and filter functionality
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+  const [courses, setCourses] = useState([]);
+  const [applications, setApplications] = useState([]);
 
   // State for course details modal and notifications
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -28,6 +140,12 @@ export default function ApplicantDashboard() {
   // Refs for click outside detection
   const notificationsRef = useRef(null);
   const bellIconRef = useRef(null);
+
+  // Load mock data
+  useEffect(() => {
+    setCourses(MockDataService.getCourses());
+    setApplications(MockDataService.getApplications());
+  }, []);
 
   // Handle click outside to close notifications
   useEffect(() => {
@@ -48,125 +166,6 @@ export default function ApplicantDashboard() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showNotifications]);
-
-  // Sample course data
-  const courses = [
-    {
-      id: 1,
-      title: "Computer Science",
-      count: "5,000+ Courses",
-      description:
-        "Covers algorithms, programming, and problem-solving, essential for computing and software development.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Monitor />,
-    },
-    {
-      id: 2,
-      title: "Special Education",
-      count: "5,000+ Courses",
-      description:
-        "Equips teachers with strategies to support students with disabilities and special needs, promoting inclusive and adaptive learning.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <Search />,
-    },
-    {
-      id: 3,
-      title: "Computer Engineering",
-      count: "5,000+ Courses",
-      description:
-        "Covers hardware, software, and embedded systems, essential for designing and optimizing computing technologies.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Monitor />,
-    },
-    {
-      id: 4,
-      title: "Accountancy",
-      count: "5,000+ Courses",
-      description:
-        "Prepares students for careers in accounting, auditing, and taxation, with a strong focus on financial reporting and CPA licensure.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <DollarSign />,
-    },
-    {
-      id: 5,
-      title: "Information Technology",
-      count: "5,000+ Courses",
-      description:
-        "Covers networking, cybersecurity, and software development, essential for IT support and system management.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Globe />,
-    },
-    {
-      id: 6,
-      title: "Human Resource Development Management",
-      count: "5,000+ Courses",
-      description:
-        "Equips students with skills in recruitment, training, and labor relations, essential for effective workforce management and organizational development.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <Users />,
-    },
-    {
-      id: 7,
-      title: "Elementary Education",
-      count: "5,000+ Courses",
-      description:
-        "Prepares future teachers for primary education, focusing on child development, pedagogy, and subject-specific teaching for Grades 1-6.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <Building />,
-    },
-    {
-      id: 8,
-      title: "Financial Management",
-      count: "5,000+ Courses",
-      description:
-        "Teaches financial analysis, investment strategies, and risk management, preparing students for careers in banking, corporate finance, and investment planning.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <DollarSign />,
-    },
-    {
-      id: 9,
-      title: "Secondary Education",
-      count: "5,000+ Courses",
-      description:
-        "Trains educators to teach in junior and senior high school (Grades 7-12), specializing in subjects like Math, Science, English, or Social Studies.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <GraduationCap />,
-    },
-  ];
-
-  // Sample application data
-  const applications = [
-    {
-      id: 1,
-      name: "Computer Science",
-      date: "2025-02-15",
-      status: "pending",
-    },
-    {
-      id: 2,
-      name: "Human Resource Development Management",
-      date: "2025-02-20",
-      status: "pending",
-    },
-  ];
 
   // Filter courses based on search query and category filter
   const filteredCourses = courses.filter((course) => {
