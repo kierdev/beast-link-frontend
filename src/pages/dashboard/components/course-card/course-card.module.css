@@ -1,0 +1,96 @@
+.courseCard {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.courseCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.courseIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.courseIcon.technology {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.courseIcon.education {
+  background-color: #f3e5f5;
+  color: #8e24aa;
+}
+
+.courseIcon.business {
+  background-color: #fff8e1;
+  color: #ff8f00;
+}
+
+.courseContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.courseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.courseHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.courseHeader button {
+  background: none;
+  border: none;
+  color: #2196f3;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.courseHeader button:hover {
+  background-color: #f5f5f5;
+}
+
+.courseMeta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+.courseContent p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.courseStats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #666;
+  margin-top: auto;
+}

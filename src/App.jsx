@@ -8,13 +8,17 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        
-        <Route path="/" element={<ApplicantDashboard />} />
+        <Route path="/dashboard/applicant" element={<ApplicantDashboard />} />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
+
         <Route
           path="/dashboard/chairperson"
           element={<ChairpersonDashboard />}
         />
-        <Route path="/dashboard/applicant" element={<ApplicantDashboard />} />
+        <Route
+          path="/dashboard/interviewer"
+          element={<InterviewerDashboard />}
+        />
       </Routes>
     </Router>
   );

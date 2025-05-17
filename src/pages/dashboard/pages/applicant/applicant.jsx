@@ -23,7 +23,8 @@ const MockDataService = {
       id: 1,
       title: "Computer Science",
       count: "5,000+ Courses",
-      description: "Covers algorithms, programming, and problem-solving, essential for computing and software development.",
+      description:
+        "Covers algorithms, programming, and problem-solving, essential for computing and software development.",
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
@@ -33,7 +34,8 @@ const MockDataService = {
       id: 2,
       title: "Special Education",
       count: "5,000+ Courses",
-      description: "Equips teachers with strategies to support students with disabilities and special needs, promoting inclusive and adaptive learning.",
+      description:
+        "Equips teachers with strategies to support students with disabilities and special needs, promoting inclusive and adaptive learning.",
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
@@ -43,7 +45,8 @@ const MockDataService = {
       id: 3,
       title: "Computer Engineering",
       count: "5,000+ Courses",
-      description: "Covers hardware, software, and embedded systems, essential for designing and optimizing computing technologies.",
+      description:
+        "Covers hardware, software, and embedded systems, essential for designing and optimizing computing technologies.",
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
@@ -53,7 +56,8 @@ const MockDataService = {
       id: 4,
       title: "Accountancy",
       count: "5,000+ Courses",
-      description: "Prepares students for careers in accounting, auditing, and taxation, with a strong focus on financial reporting and CPA licensure.",
+      description:
+        "Prepares students for careers in accounting, auditing, and taxation, with a strong focus on financial reporting and CPA licensure.",
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
@@ -63,7 +67,8 @@ const MockDataService = {
       id: 5,
       title: "Information Technology",
       count: "5,000+ Courses",
-      description: "Covers networking, cybersecurity, and software development, essential for IT support and system management.",
+      description:
+        "Covers networking, cybersecurity, and software development, essential for IT support and system management.",
       college: "College of Technology",
       date: "Apr 25, 2025",
       category: "technology",
@@ -73,7 +78,8 @@ const MockDataService = {
       id: 6,
       title: "Human Resource Development Management",
       count: "5,000+ Courses",
-      description: "Equips students with skills in recruitment, training, and labor relations, essential for effective workforce management and organizational development.",
+      description:
+        "Equips students with skills in recruitment, training, and labor relations, essential for effective workforce management and organizational development.",
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
@@ -83,7 +89,8 @@ const MockDataService = {
       id: 7,
       title: "Elementary Education",
       count: "5,000+ Courses",
-      description: "Prepares future teachers for primary education, focusing on child development, pedagogy, and subject-specific teaching for Grades 1-6.",
+      description:
+        "Prepares future teachers for primary education, focusing on child development, pedagogy, and subject-specific teaching for Grades 1-6.",
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
@@ -93,7 +100,8 @@ const MockDataService = {
       id: 8,
       title: "Financial Management",
       count: "5,000+ Courses",
-      description: "Teaches financial analysis, investment strategies, and risk management, preparing students for careers in banking, corporate finance, and investment planning.",
+      description:
+        "Teaches financial analysis, investment strategies, and risk management, preparing students for careers in banking, corporate finance, and investment planning.",
       college: "College of Business and Accountancy",
       date: "Apr 25, 2025",
       category: "business",
@@ -103,7 +111,8 @@ const MockDataService = {
       id: 9,
       title: "Secondary Education",
       count: "5,000+ Courses",
-      description: "Trains educators to teach in junior and senior high school (Grades 7-12), specializing in subjects like Math, Science, English, or Social Studies.",
+      description:
+        "Trains educators to teach in junior and senior high school (Grades 7-12), specializing in subjects like Math, Science, English, or Social Studies.",
       college: "College of Education",
       date: "Apr 25, 2025",
       category: "education",
@@ -123,7 +132,15 @@ const MockDataService = {
       date: "2025-02-20",
       status: "pending",
     },
-  ]
+  ],
+  getProgress: () => [
+    { label: "Application", status: "completed" },
+    { label: "Document", status: "completed" },
+    { label: "Exam", status: "completed" },
+    { label: "Interview", status: "current" },
+    { label: "Decision", status: "upcoming" },
+    { label: "Enrollment", status: "upcoming" },
+  ],
 };
 
 export default function ApplicantDashboard() {
@@ -132,7 +149,7 @@ export default function ApplicantDashboard() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [courses, setCourses] = useState([]);
   const [applications, setApplications] = useState([]);
-
+  const [progress, setProgress] = useState([]);
   // State for course details modal and notifications
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -145,6 +162,7 @@ export default function ApplicantDashboard() {
   useEffect(() => {
     setCourses(MockDataService.getCourses());
     setApplications(MockDataService.getApplications());
+    setProgress(MockDataService.getProgress);
   }, []);
 
   // Handle click outside to close notifications
@@ -207,8 +225,7 @@ export default function ApplicantDashboard() {
                 className={styles.notificationIcon}
                 onClick={toggleNotifications}
               >
-                <span className={styles.notificationBadge}>2</span>
-                <Bell />
+                <Bell size={24} color="yellow" />
               </div>
               {showNotifications && (
                 <div ref={notificationsRef}>
@@ -226,12 +243,13 @@ export default function ApplicantDashboard() {
           {/* Application Progress */}
           <div className={styles.progressTracker}>
             <div className={styles.progressLine}></div>
-            <ProgressStep label="Application" status="completed" />
-            <ProgressStep label="Document" status="completed" />
-            <ProgressStep label="Exam" status="current" />
-            <ProgressStep label="Interview" status="upcoming" />
-            <ProgressStep label="Decision" status="upcoming" />
-            <ProgressStep label="Enrollment" status="upcoming" />
+            {progress.map((step, index) => (
+              <ProgressStep
+                key={index}
+                label={step.label}
+                status={step.status}
+              />
+            ))}
           </div>
 
           {/* Available Courses */}

@@ -186,3 +186,106 @@
 .chartCardFull {
   grid-column: 1 / -1;
 }
+
+/* Add these to your existing admin.module.css */
+
+.tableContainer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tableHeader,
+.tableRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 12px 15px;
+  align-items: center;
+  justify-content: center;
+  background-color: #014737;
+}
+
+.tableHeader {
+  background-color: #014737;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.tableRow {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.tableRow:hover {
+  background-color: #09b089;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.complete {
+  color: #28a745;
+}
+
+.incomplete {
+  color: #dc3545;
+}
+
+.fillRateBar {
+  position: relative;
+  height: 24px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fillRateProgress {
+  height: 100%;
+  background-color: #4bc0c0;
+}
+
+.fillRateText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.available {
+  color: #28a745;
+}
+
+.full {
+  color: #dc3545;
+}
+
+.error {
+  padding: 20px;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  margin: 20px;
+}

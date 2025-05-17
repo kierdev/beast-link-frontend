@@ -5,7 +5,17 @@ import styles from "./chairperson.module.css";
 import NotificationsDropdown from "../../components/notifications/notifications";
 import Sidebar from "../../../../components/side-bar/side-bar";
 import { LoadingSpinner } from "../../../../components/loading/loading";
-import { Users, UserCheck, UserX, Book } from "lucide-react";
+import {
+  Users,
+  UserCheck,
+  UserX,
+  Book,
+  Bell,
+  Calendar,
+  Clock,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import { toPercent } from "../../../../utils/numberUtils";
 import PieChart from "../../components/pie-chart/pie-chart";
 
@@ -16,8 +26,47 @@ const MockDataService = {
     passedApplicants: 75,
     failedApplicants: 30,
     pendingApplicants: 20,
-    department: "Information Technology"
-  })
+    department: "Information Technology",
+    unreadNotifications: 3,
+    examScoreDistribution: [
+      { label: "90-100", value: 15 },
+      { label: "80-89", value: 30 },
+      { label: "70-79", value: 20 },
+      { label: "60-69", value: 10 },
+      { label: "Below 60", value: 10 },
+    ],
+  }),
+  getApplicants: () =>
+    Array.from({ length: 25 }, (_, i) => ({
+      id: `APP-${1000 + i}`,
+      name: `Applicant ${i + 1}`,
+      email: `applicant${i + 1}@example.com`,
+      status: ["Pending", "Approved", "Rejected"][i % 3],
+      appliedDate: new Date(Date.now() - i * 86400000)
+        .toISOString()
+        .split("T")[0],
+      documents: i % 4 === 0 ? "Incomplete" : "Complete",
+    })),
+  getExams: () => [
+    {
+      id: "EXM-001",
+      name: "Entrance Exam - Spring 2023",
+      date: "2023-03-15",
+      time: "09:00 AM",
+      location: "Building A, Room 101",
+      status: "Completed",
+      participants: 45,
+    },
+    {
+      id: "EXM-002",
+      name: "Make-up Exam",
+      date: "2023-04-10",
+      time: "01:00 PM",
+      location: "Building B, Room 205",
+      status: "Scheduled",
+      participants: 12,
+    },
+  ],
 };
 
 export default function ChairpersonDashboard() {
@@ -25,51 +74,54 @@ export default function ChairpersonDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);
   const [error, setError] = useState(null);
-  const [pieChartData, setPieChartData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Tab-specific data states
+  const [applicants, setApplicants] = useState([]);
+  const [exams, setExams] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 500));
+        setLoading(true);
         const response = MockDataService.getProgramStatistics();
         setData(response);
       } catch (err) {
         console.error("Error loading dashboard data:", err);
         setError(err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
-    if (data) {
-      setPieChartData([
-        {
-          label: "Failed",
-          value: toPercent(data.totalApplicants, data.failedApplicants),
-          color: "#FF0000",
-        },
-        {
-          label: "Passed",
-          value: toPercent(data.totalApplicants, data.passedApplicants),
-          color: "#00ff00",
-        },
-        {
-          label: "Pending",
-          value: toPercent(data.totalApplicants, data.pendingApplicants),
-          color: "#ffa500",
-        },
-      ]);
-    }
-  }, [data]);
+    const fetchTabData = async () => {
+      try {
+        if (activeTab === "applicants" && applicants.length === 0) {
+          setApplicants(MockDataService.getApplicants());
+        } else if (activeTab === "exams" && exams.length === 0) {
+          setExams(MockDataService.getExams());
+        }
+      } catch (err) {
+        console.error(`Error loading ${activeTab} data:`, err);
+      }
+    };
+
+    fetchTabData();
+  }, [activeTab]);
 
   if (error) {
-    return <div>Error loading dashboard: {error.message}</div>;
+    return (
+      <div className={styles.error}>
+        Error loading dashboard: {error.message}
+      </div>
+    );
   }
 
-  if (!data) {
+  if (loading || !data) {
     return <LoadingSpinner />;
   }
 
@@ -87,7 +139,7 @@ export default function ChairpersonDashboard() {
               className={styles.notificationIcon}
               onClick={() => setShowNotifications(!showNotifications)}
             >
-              <span className={styles.notificationBadge}>1</span>🔔
+              <Bell size={24} color="yellow" />
               {showNotifications && (
                 <NotificationsDropdown
                   onClose={() => setShowNotifications(false)}
@@ -105,7 +157,8 @@ export default function ChairpersonDashboard() {
             <div className={styles.infoAlertContent}>
               <h2 className={styles.infoAlertTitle}>Department View</h2>
               <p className={styles.infoAlertText}>
-                You are viewing data for the <strong>{data.department}</strong> department only
+                You are viewing data for the <strong>{data.department}</strong>{" "}
+                department only
               </p>
             </div>
           </div>
@@ -160,65 +213,93 @@ export default function ChairpersonDashboard() {
             >
               Exams
             </button>
-            <button
-              className={`${styles.filterTab} ${
-                activeTab === "events" ? styles.activeTab : ""
-              }`}
-              onClick={() => setActiveTab("events")}
-            >
-              Events
-            </button>
           </div>
 
-          {/* Main Content */}
-          <div className={styles.contentGrid}>
-            {/* Application Status */}
-            <div className={styles.chartCard}>
-              <h2 className={styles.chartTitle}>Application Status</h2>
-              <p className={styles.chartSubtitle}>
-                Distribution of {data.department} application statuses
-              </p>
-              <PieChart data={pieChartData} width={250} height={250} />
-            </div>
+          {/* Tab Content */}
+          {activeTab === "overview" && (
+            <div className={styles.contentGrid}>
+              {/* Application Status */}
+              <div className={styles.chartCard}>
+                <h2 className={styles.chartTitle}>Application Status</h2>
+                <p className={styles.chartSubtitle}>
+                  Distribution of {data.department} application statuses
+                </p>
+                <PieChart
+                  data={[
+                    {
+                      label: "Failed",
+                      value: toPercent(
+                        data.totalApplicants,
+                        data.failedApplicants
+                      ),
+                      color: "#FF0000",
+                    },
+                    {
+                      label: "Passed",
+                      value: toPercent(
+                        data.totalApplicants,
+                        data.passedApplicants
+                      ),
+                      color: "#00ff00",
+                    },
+                    {
+                      label: "Pending",
+                      value: toPercent(
+                        data.totalApplicants,
+                        data.pendingApplicants
+                      ),
+                      color: "#ffa500",
+                    },
+                  ]}
+                  width={250}
+                  height={250}
+                />
+              </div>
 
-            {/* Exam Score Distribution */}
-            <div className={styles.chartCard}>
-              <h2 className={styles.chartTitle}>Exam Score Distribution</h2>
-              <p className={styles.chartSubtitle}>
-                {data.department} applicants by exam score ranges
-              </p>
-              <div className={styles.chartContent}>
-                <div className={styles.barChart}>
-                  <div className={styles.barChartBar} style={{ height: "80%" }}>
-                    <span className={styles.barLabel}>90-100</span>
-                    <span className={styles.barValue}>2</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "40%" }}>
-                    <span className={styles.barLabel}>80-89</span>
-                    <span className={styles.barValue}>1</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "40%" }}>
-                    <span className={styles.barLabel}>70-79</span>
-                    <span className={styles.barValue}>1</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "0%" }}>
-                    <span className={styles.barLabel}>60-69</span>
-                    <span className={styles.barValue}>0</span>
-                  </div>
-                  <div className={styles.barChartBar} style={{ height: "0%" }}>
-                    <span className={styles.barLabel}>Below 60</span>
-                    <span className={styles.barValue}>0</span>
+              {/* Exam Score Distribution */}
+              <div className={styles.chartCard}>
+                <h2 className={styles.chartTitle}>Exam Score Distribution</h2>
+                <p className={styles.chartSubtitle}>
+                  {data.department} applicants by exam score ranges
+                </p>
+                <div className={styles.chartContent}>
+                  <div className={styles.barChart}>
+                    {data.examScoreDistribution.map((item, index) => (
+                      <div
+                        key={index}
+                        className={styles.barChartBar}
+                        style={{ height: `${item.value * 2}px` }}
+                      >
+                        <span className={styles.barValue}>{item.value}</span>
+                        <span className={styles.barLabel}>{item.label}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {activeTab === "applicants" && (
+            <div className={styles.tabContent}>
+              <h2 className={styles.tabTitle}>Applicant Management</h2>
+              <ApplicantsTable applicants={applicants} />
+            </div>
+          )}
+
+          {activeTab === "exams" && (
+            <div className={styles.tabContent}>
+              <h2 className={styles.tabTitle}>Exam Schedule</h2>
+              <ExamsTable exams={exams} />
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
+// Sub-components kept in the same file
 function StatCard({ title, value, icon }) {
   return (
     <div className={styles.statCard}>
@@ -229,6 +310,102 @@ function StatCard({ title, value, icon }) {
         </div>
         <div className={styles.statIcon}>{icon}</div>
       </div>
+    </div>
+  );
+}
+
+function ApplicantsTable({ applicants }) {
+  return (
+    <div className={styles.tableContainer}>
+      <div className={styles.tableHeader}>
+        <div>ID</div>
+        <div>Name</div>
+        <div>Email</div>
+        <div>Status</div>
+        <div>Applied Date</div>
+        <div>Documents</div>
+      </div>
+      {applicants.map((applicant) => (
+        <div key={applicant.id} className={styles.tableRow}>
+          <div>{applicant.id}</div>
+          <div>{applicant.name}</div>
+          <div>{applicant.email}</div>
+          <div
+            className={`${styles.statusBadge} ${
+              styles[applicant.status.toLowerCase()]
+            }`}
+          >
+            {applicant.status}
+          </div>
+          <div>{applicant.appliedDate}</div>
+          <div
+            className={
+              applicant.documents === "Complete"
+                ? styles.complete
+                : styles.incomplete
+            }
+          >
+            {applicant.documents}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ExamsTable({ exams }) {
+  return (
+    <div className={styles.tableContainer}>
+      <div className={styles.tableHeader}>
+        <div>Exam ID</div>
+        <div>Name</div>
+        <div>Date</div>
+        <div>Time</div>
+        <div>Location</div>
+        <div>Status</div>
+        <div>Participants</div>
+      </div>
+      {exams.map((exam) => (
+        <div key={exam.id} className={styles.tableRow}>
+          <div>{exam.id}</div>
+          <div>{exam.name}</div>
+          <div>{exam.date}</div>
+          <div>{exam.time}</div>
+          <div>{exam.location}</div>
+          <div
+            className={`${styles.statusBadge} ${
+              styles[exam.status.toLowerCase()]
+            }`}
+          >
+            {exam.status}
+          </div>
+          <div>{exam.participants}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EventsList({ events }) {
+  return (
+    <div className={styles.eventsGrid}>
+      {events.map((event) => (
+        <div key={event.id} className={styles.eventCard}>
+          <div className={styles.eventHeader}>
+            <h3>{event.title}</h3>
+            <span className={styles.eventType}>{event.type}</span>
+          </div>
+          <div className={styles.eventDetails}>
+            <div>
+              <Calendar size={16} /> {event.date}
+            </div>
+            <div>
+              <Clock size={16} /> {event.time}
+            </div>
+            <div>📍 {event.location}</div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -2,96 +2,97 @@
 
 import { useEffect, useState } from "react";
 import styles from "./admin.module.css";
-import { Users, UserCheck, UserX, Book } from "lucide-react";
-import NotificationsDropdown from "../../components/notifications/notifications";
+import {
+  Users,
+  UserCheck,
+  UserX,
+  Book,
+  Bell,
+  GraduationCap,
+} from "lucide-react";
+import NotificationDropdown from "../../components/notifications/notifications";
 import { LoadingSpinner } from "../../../../components/loading/loading";
 import Sidebar from "../../../../components/side-bar/side-bar";
 import PieChart from "../../components/pie-chart/pie-chart";
 import BarChart from "../../components/bar-chart/bar-chart";
 import LineChart from "../../components/line-chart/line-chart";
+import ScrollArea from "../../../../components/scroll-area/scroll-area";
 import { toPercent } from "../../../../utils/numberUtils";
-
-// Mock data service
-const MockDataService = {
-  getAdminDashboard: () => ({
-    totalApplicants: 245,
-    passedApplicants: 120,
-    failedApplicants: 75,
-    pendingApplicants: 50,
-    totalCourses: 8
-  })
-};
+import { MockDataService } from "../../../../data/mock-data";
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showNotifications, setShowNotifications] = useState(false);
   const [error, setError] = useState(null);
-  const [pieChartData, setPieChartData] = useState([]);
-  const [barChartData, setBarChartData] = useState([]);
-  const [lineChartData, setLineChartData] = useState([]);
+  const [applicants, setApplicants] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Simulate API call with timeout
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
+      setLoading(true);
       try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        const response = MockDataService.getAdminDashboard();
-        setData(response);
+        const [dashboardData, applicantsData, coursesData] = await Promise.all([
+          MockDataService.fetchData("/dashboard"),
+          MockDataService.fetchData("/applicants"),
+          MockDataService.fetchData("/courses"),
+        ]);
+
+        // Calculate percentages for pie chart
+        const totalApplicants = dashboardData.stats.totalApplicants;
+        const pieDataWithPercentages = dashboardData.charts.pieChartData.map(
+          (item) => ({
+            ...item,
+            value: toPercent(totalApplicants, item.value),
+          })
+        );
+
+        setData({
+          ...dashboardData,
+          charts: {
+            ...dashboardData.charts,
+            pieChartData: pieDataWithPercentages,
+          },
+        });
+        setApplicants(applicantsData.applicants);
+        setCourses(coursesData.courses);
       } catch (err) {
-        console.error("Error loading mock data:", err);
-        setError(err);
+        console.error("Error loading data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchInitialData();
   }, []);
 
-  useEffect(() => {
-    if (data) {
-      setPieChartData([
-        {
-          label: "Failed",
-          value: toPercent(data.totalApplicants, data.failedApplicants),
-          color: "#FF0000",
-        },
-        {
-          label: "Passed",
-          value: toPercent(data.totalApplicants, data.passedApplicants),
-          color: "#00ff00",
-        },
-        {
-          label: "Pending",
-          value: toPercent(data.totalApplicants, data.pendingApplicants),
-          color: "#ffa500",
-        },
-      ]);
-      setBarChartData([
-        { label: "BSIT", value: 65, color: "#FF6384" },
-        { label: "BSCS", value: 59, color: "#36A2EB" },
-        { label: "BSCE", value: 80, color: "#FFCE56" },
-        { label: "BSA", value: 56, color: "#4BC0C0" },
-        { label: "BSSW", value: 40, color: "#9966FF" },
-      ]);
-
-      setLineChartData([
-        { label: "Jan", value: 65 },
-        { label: "Feb", value: 59 },
-        { label: "Mar", value: 80 },
-        { label: "Apr", value: 81 },
-        { label: "May", value: 56 },
-        { label: "Jun", value: 55 },
-        { label: "Jul", value: 40 },
-      ]);
+  const handleTabChange = async (tab) => {
+    setActiveTab(tab);
+    // Simulate loading data when switching to these tabs
+    if (tab === "applicants" && applicants.length === 0) {
+      try {
+        const { applicants } = await MockDataService.fetchData("/applicants");
+        setApplicants(applicants);
+      } catch (err) {
+        console.error("Error loading applicants:", err);
+      }
+    } else if (tab === "courses" && courses.length === 0) {
+      try {
+        const { courses } = await MockDataService.fetchData("/courses");
+        setCourses(courses);
+      } catch (err) {
+        console.error("Error loading courses:", err);
+      }
     }
-  }, [data]);
+  };
 
   if (error) {
-    return <div>Error loading dashboard: {error.message}</div>;
+    return <div className={styles.error}>Error loading dashboard: {error}</div>;
   }
 
-  if (!data) {
+  if (loading || !data) {
     return <LoadingSpinner />;
   }
 
@@ -100,17 +101,17 @@ export default function AdminDashboard() {
       <Sidebar activePage="dashboard" />
       <div className={styles.dashboardMain}>
         <div className={styles.dashboardHeader}>
-          <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
+          <h1>Admin Dashboard</h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Administrator</span>
             <div
               className={styles.notificationIcon}
               onClick={() => setShowNotifications(!showNotifications)}
             >
-              <span className={styles.notificationBadge}>2</span>🔔
+              <Bell size={24} color="yellow" />
               {showNotifications && (
-                <NotificationsDropdown
-                  onClose={() => setShowNotifications(false)}
+                <NotificationDropdown
+                  initialNotifications={data.notifications}
                 />
               )}
             </div>
@@ -119,26 +120,26 @@ export default function AdminDashboard() {
         </div>
 
         <div className={styles.dashboardContent}>
-          {/* Stats Cards */}
+          {/* Stats Cards - Always visible */}
           <div className={styles.statsGrid}>
             <StatCard
               title="Total Applicants"
-              value={data.totalApplicants}
+              value={data.stats.totalApplicants}
               icon={<Users />}
             />
             <StatCard
               title="Passed Applicants"
-              value={data.passedApplicants}
+              value={data.stats.passedApplicants}
               icon={<UserCheck />}
             />
             <StatCard
               title="Failed Applicants"
-              value={data.failedApplicants}
+              value={data.stats.failedApplicants}
               icon={<UserX />}
             />
             <StatCard
               title="Total Courses"
-              value={data.totalCourses}
+              value={data.stats.totalCourses}
               icon={<Book />}
             />
           </div>
@@ -149,7 +150,7 @@ export default function AdminDashboard() {
               className={`${styles.filterTab} ${
                 activeTab === "overview" ? styles.activeTab : ""
               }`}
-              onClick={() => setActiveTab("overview")}
+              onClick={() => handleTabChange("overview")}
             >
               Overview
             </button>
@@ -157,7 +158,7 @@ export default function AdminDashboard() {
               className={`${styles.filterTab} ${
                 activeTab === "applicants" ? styles.activeTab : ""
               }`}
-              onClick={() => setActiveTab("applicants")}
+              onClick={() => handleTabChange("applicants")}
             >
               Applicants
             </button>
@@ -165,49 +166,137 @@ export default function AdminDashboard() {
               className={`${styles.filterTab} ${
                 activeTab === "courses" ? styles.activeTab : ""
               }`}
-              onClick={() => setActiveTab("courses")}
+              onClick={() => handleTabChange("courses")}
             >
               Courses
             </button>
           </div>
 
-          {/* Main Content */}
-          <div className={styles.contentGrid}>
-            {/* Application Status */}
-            <PieChart data={pieChartData} width={250} height={250} />
-
-            {/* Applicants by Course */}
-            <div className={styles.chartCard}>
-              <h2 className={styles.chartTitle}>Applicants by Course</h2>
-              <p className={styles.chartSubtitle}>
-                Number of applicants per course
-              </p>
-              <BarChart
-                data={barChartData}
-                width={600}
-                height={300}
-                barColor="#4BC0C0"
-                showValues={true}
+          {/* Tab Content */}
+          {activeTab === "overview" && (
+            <div className={styles.contentGrid}>
+              <PieChart
+                data={data.charts.pieChartData}
+                width={250}
+                height={250}
               />
-            </div>
 
-            {/* Application Trends */}
-            <div className={styles.chartCardFull}>
-              <h2 className={styles.chartTitle}>Application Trends</h2>
-              <p className={styles.chartSubtitle}>
-                Monthly application submissions
-              </p>
-              <LineChart
-                data={lineChartData}
-                width={1000}
-                height={500}
-                lineColor="#FF6384"
-                dotColor="#36A2EB"
-                showArea={true}
-                gridLines={true}
-              />
+              <div className={styles.chartCard}>
+                <h2>Applicants by Course</h2>
+                <BarChart
+                  data={data.charts.barChartData}
+                  width={600}
+                  height={300}
+                  barColor="#4BC0C0"
+                  showValues={true}
+                />
+              </div>
+
+              <div className={styles.chartCardFull}>
+                <h2>Application Trends</h2>
+                <LineChart
+                  data={data.charts.lineChartData}
+                  width={1000}
+                  height={500}
+                  lineColor="#FF6384"
+                  dotColor="#36A2EB"
+                  showArea={true}
+                  gridLines={true}
+                />
+              </div>
             </div>
-          </div>
+          )}
+
+          {activeTab === "applicants" && (
+            <div className={styles.tableContainer}>
+              <h2>Applicant Management</h2>
+              <div className={styles.tableHeader}>
+                <span>ID</span>
+                <span>Name</span>
+                <span>Email</span>
+                <span>Course</span>
+                <span>Status</span>
+                <span>Applied Date</span>
+                <span>Documents</span>
+              </div>
+              <ScrollArea maxHeight="500px">
+                {applicants.map((applicant) => (
+                  <div key={applicant.id} className={styles.tableRow}>
+                    <span>{applicant.id}</span>
+                    <span>{applicant.name}</span>
+                    <span>{applicant.email}</span>
+                    <span>{applicant.course}</span>
+                    <span
+                      className={`${styles.status} ${
+                        styles[applicant.status.toLowerCase()]
+                      }`}
+                    >
+                      {applicant.status}
+                    </span>
+                    <span>{applicant.appliedDate}</span>
+                    <span
+                      className={
+                        applicant.documents === "Complete"
+                          ? styles.complete
+                          : styles.incomplete
+                      }
+                    >
+                      {applicant.documents}
+                    </span>
+                  </div>
+                ))}
+              </ScrollArea>
+            </div>
+          )}
+
+          {activeTab === "courses" && (
+            <div className={styles.tableContainer}>
+              <h2>Course Management</h2>
+              <div className={styles.tableHeader}>
+                <span>Code</span>
+                <span>Name</span>
+                <span>Seats</span>
+                <span>Enrolled</span>
+                <span>Available</span>
+                <span>Fill Rate</span>
+              </div>
+              <ScrollArea maxHeight="500px">
+                {courses.map((course) => {
+                  const available = course.seats - course.enrolled;
+                  const fillRate = (
+                    (course.enrolled / course.seats) *
+                    100
+                  ).toFixed(1);
+                  return (
+                    <div key={course.id} className={styles.tableRow}>
+                      <span>{course.code}</span>
+                      <span>{course.name}</span>
+                      <span>{course.seats}</span>
+                      <span>{course.enrolled}</span>
+                      <span
+                        className={
+                          available <= 0 ? styles.full : styles.available
+                        }
+                      >
+                        {available <= 0 ? "Full" : available}
+                      </span>
+                      <span>
+                        <div className={styles.fillRateBar}>
+                          <div
+                            className={styles.fillRateProgress}
+                            style={{ width: `${fillRate}%` }}
+                          />
+                          <span className={styles.fillRateText}>
+                            {fillRate}%
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  );
+                })}
+              </ScrollArea>
+            </div>
+          )}
         </div>
       </div>
     </div>
