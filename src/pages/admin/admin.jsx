@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './Notification.module.css';
+import styles from './adminNotification.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import logo from '../../assets/logo.png'
 
 // Use relative URL since we're using Vite's proxy
 const API_BASE_URL = '/api';
 
-export default function Notification() {
+export default function AdminNotification() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,14 +15,11 @@ export default function Notification() {
   const [filter, setFilter] = useState('all');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const applicantId = 3; // Hardcoded applicant ID as per requirement
 
   useEffect(() => {
-    console.log(`Fetching notifications for Applicant ID: ${applicantId}`);
     fetchNotifications();
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -35,8 +32,7 @@ export default function Notification() {
 
   const fetchNotifications = async () => {
     try {
-      console.log(`Making API request to: ${API_BASE_URL}/applicants/notifications/${applicantId}`);
-      const response = await fetch(`${API_BASE_URL}/applicants/notifications/${applicantId}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/notifications`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -49,10 +45,8 @@ export default function Notification() {
       }
 
       const data = await response.json();
-      console.log(`Received notifications for Applicant ID ${applicantId}:`, data);
       setNotifications(data);
       setLoading(false);
-      // Check if all notifications are read
       setAllRead(data.every(notification => notification.is_read));
     } catch (err) {
       console.error('Error fetching notifications:', err);
@@ -61,10 +55,9 @@ export default function Notification() {
     }
   };
 
-  const handleMarkAllAsRead = async () => {
+  const handleAdminMarkAllAsRead = async () => {
     try {
-      console.log(`Marking all notifications as read for Applicant ID: ${applicantId}`);
-      const response = await fetch(`${API_BASE_URL}/notifications/mark-all-read/${applicantId}`, {
+      const response = await fetch(`${API_BASE_URL}/notifications/mark-all-admin-read`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -73,11 +66,10 @@ export default function Notification() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
       }
 
-      console.log('Successfully marked all notifications as read');
-      // Update local state to mark all as read
       setNotifications(prevNotifications => 
         prevNotifications.map(notification => ({
           ...notification,
@@ -94,7 +86,6 @@ export default function Notification() {
   const handleNotificationClick = async (notification) => {
     setSelectedNotification(notification);
     
-    // If notification is unread, mark it as read
     if (!notification.is_read) {
       try {
         const response = await fetch(`${API_BASE_URL}/notifications/${notification.notification_id}/read`, {
@@ -106,17 +97,16 @@ export default function Notification() {
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorData = await response.json().catch(() => null);
+          throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
         }
 
-        // Update local state to mark this notification as read
         setNotifications(prevNotifications =>
           prevNotifications.map(n =>
             n.notification_id === notification.notification_id ? { ...n, is_read: true } : n
           )
         );
 
-        // Check if all notifications are now read
         const updatedNotifications = notifications.map(n =>
           n.notification_id === notification.notification_id ? { ...n, is_read: true } : n
         );
@@ -139,20 +129,18 @@ export default function Notification() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
       }
 
-      // Remove the deleted notification from the list
       setNotifications(prevNotifications =>
         prevNotifications.filter(n => n.notification_id !== notificationId)
       );
 
-      // Close modal if the deleted notification was selected
       if (selectedNotification?.notification_id === notificationId) {
         setSelectedNotification(null);
       }
 
-      // Check if all remaining notifications are read
       const remainingNotifications = notifications.filter(n => n.notification_id !== notificationId);
       setAllRead(remainingNotifications.every(n => n.is_read));
     } catch (err) {
@@ -213,7 +201,7 @@ export default function Notification() {
               )}
             </div>
             <button 
-              onClick={handleMarkAllAsRead}
+              onClick={handleAdminMarkAllAsRead}
               className={styles.markReadButton}
               disabled={allRead || notifications.length === 0}
             >
