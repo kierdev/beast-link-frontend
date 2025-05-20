@@ -1,0 +1,127 @@
+.graphContainer {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.graph {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 350px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.barContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14%;
+}
+
+.barWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 80%;
+  margin: 0 auto;
+  transition: height 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.passedBar {
+  background-color: #34a853;
+  border-radius: 4px 4px 0 0;
+}
+
+.failedBar {
+  background-color: #ea4335;
+  border-radius: 0 0 4px 4px;
+}
+
+.bar:hover {
+  opacity: 0.9;
+}
+
+.passedLabel,
+.failedLabel {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px;
+  margin-bottom: 2px;
+  border-radius: 3px;
+}
+
+.passedLabel {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #1a601a;
+}
+
+.failedLabel {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #a71a1a;
+}
+
+.programLabel {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+  font-weight: 500;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.totalLabel {
+  font-size: 10px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.legendColor {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 3px;
+}
+
+.passedLegend {
+  background-color: #34a853;
+}
+
+.failedLegend {
+  background-color: #ea4335;
+}

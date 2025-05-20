@@ -1,0 +1,170 @@
+.calendarContainer {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.monthTitle {
+  margin: 0;
+  color: #000000; /* Changed from #2d3748 to #000000 */
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.navButton {
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #000000; /* Changed from #4a5568 to #000000 */
+  transition: all 0.2s ease;
+  min-width: 90px;
+}
+
+.navButton:hover {
+  background-color: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.todayButton {
+  background-color: #4299e1;
+  color: #000000; /* Changed from white to #000000 */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 16px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.todayButton:hover {
+  background-color: #3182ce;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: #000000; /* Changed from #4a5568 to #000000 */
+  font-size: 0.9rem;
+}
+
+.weekday {
+  padding: 8px;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendarDay {
+  min-height: 120px;
+  border: 1px solid #e2e8f0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.calendarDay:hover {
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.today {
+  background-color: #ebf8ff;
+  border-color: #bee3f8;
+}
+
+.hasInterviews {
+  border-color: #68d391;
+}
+
+.dayNumber {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #000000; /* Changed from #2d3748 to #000000 */
+  font-size: 0.95rem;
+}
+
+.interviewBadge {
+  background-color: #68d391;
+  color: #000000; /* Changed from white to #000000 */
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.interviewList {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.interviewItem {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  padding: 4px;
+  background-color: #f0fff4;
+  border-radius: 4px;
+}
+
+.applicantName {
+  font-weight: 600;
+  color: #000000; /* Changed from #2d3748 to #000000 */
+}
+
+.programName {
+  color: #000000; /* Changed from #4a5568 to #000000 */
+  font-size: 0.65rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.moreItems {
+  font-size: 0.7rem;
+  color: #000000; /* Changed from #718096 to #000000 */
+  text-align: center;
+  margin-top: 4px;
+}
+
+.emptyDay {
+  min-height: 120px;
+  border: 1px solid transparent;
+  background-color: #f8fafc;
+  border-radius: 8px;
+}

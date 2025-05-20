@@ -17,7 +17,6 @@ export async function getChairpersonDashboardData(programCode) {
   }
   return response.json();
 }
-
 export async function getInterviewerDashboardData() {
   const response = await fetch(`${API_BASE_URL}/interviewer/dashboard`);
   if (!response.ok) {

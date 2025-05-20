@@ -12,7 +12,9 @@ import LineChart from "../../components/line-chart/line-chart";
 import ScrollArea from "../../../../components/scroll-area/scroll-area";
 import { toPercent } from "../../../../utils/numberUtils";
 import { getAdminDashboardData } from "../../../../data/dashboard-service";
-
+import AcceptanceRateGraph from "../../components/acceptance-rate-graph/acceptance-rate-graph";
+import InterviewResultsGraph from "../../components/interview-results-graph/interview-results-graph";
+import InterviewCalendar from "../../components/interview-calendar/interview-calendar";
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
@@ -21,7 +23,34 @@ export default function AdminDashboard() {
   const [applicants, setApplicants] = useState([]);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [interviews, setInterviews] = useState([
+    { date: "2023-06-15", applicant: "John Doe", program: "Computer Science" },
+    { date: "2023-06-15", applicant: "Alice Johnson", program: "Medicine" },
+    { date: "2023-06-20", applicant: "Jane Smith", program: "Business" },
+    { date: "2023-07-05", applicant: "Mike Brown", program: "Engineering" },
+  ]);
+  const admissionData = [
+    { name: "Computer Science", acceptanceRate: 12 },
+    { name: "Business Admin", acceptanceRate: 28 },
+    { name: "Electrical Eng", acceptanceRate: 18 },
+    { name: "Fine Arts", acceptanceRate: 45 },
+    { name: "Medicine", acceptanceRate: 8 },
+    { name: "Law", acceptanceRate: 22 },
+  ];
+  const interviewData = [
+    { name: "Computer Science", passed: 120, failed: 180 },
+    { name: "Business", passed: 150, failed: 90 },
+    { name: "Engineering", passed: 80, failed: 120 },
+    { name: "Arts", passed: 200, failed: 50 },
+    { name: "Medicine", passed: 60, failed: 140 },
+    { name: "Law", passed: 90, failed: 60 },
+  ];
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+    // You could fetch interviews for this date or show a modal
+    console.log("Selected date:", date);
+  };
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
@@ -149,19 +178,18 @@ export default function AdminDashboard() {
           {/* Tab Content */}
           {activeTab === "overview" && (
             <div className={styles.contentGrid}>
-              
               <div className={styles.chartCard}>
                 <h2 className={styles.chartTitle}>Applicantion Status</h2>
                 <p className={styles.chartSubtitle}>
                   total applicant application status
                 </p>
                 <PieChart
-                data={data.charts.pieChartData}
-                width={250}
-                height={250}
-              />
+                  data={data.charts.pieChartData}
+                  width={250}
+                  height={250}
+                />
               </div>
-              
+
               <div className={styles.chartCard}>
                 <h2 className={styles.chartTitle}>Applicants by Course</h2>
                 <p className={styles.chartSubtitle}>
@@ -190,6 +218,30 @@ export default function AdminDashboard() {
                   showArea={true}
                   gridLines={true}
                 />
+              </div>
+              <AcceptanceRateGraph data={admissionData} />
+              <InterviewResultsGraph data={interviewData} />
+              <div>
+                <h1>Admission Interview Schedule</h1>
+                <InterviewCalendar
+                  interviews={interviews}
+                  onDateClick={handleDateClick}
+                />
+
+                {selectedDate && (
+                  <div className="selected-date">
+                    <h3>Interviews on {selectedDate}</h3>
+                    <ul>
+                      {interviews
+                        .filter((i) => i.date === selectedDate)
+                        .map((interview, index) => (
+                          <li key={index}>
+                            {interview.applicant} - {interview.program}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           )}

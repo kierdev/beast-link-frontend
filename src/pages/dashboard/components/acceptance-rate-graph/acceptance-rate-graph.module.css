@@ -1,0 +1,96 @@
+.graphContainer {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.graph {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 300px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.barContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 15%;
+}
+
+.barWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bar {
+  background-color: #4285f4;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.5s ease;
+  position: relative;
+  min-height: 2px;
+}
+
+.bar:hover {
+  background-color: #3367d6;
+}
+
+.rateLabel {
+  position: absolute;
+  top: -25px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+.programLabel {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+  font-weight: 500;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.legendColor {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #4285f4;
+  margin-right: 8px;
+  border-radius: 3px;
+}
