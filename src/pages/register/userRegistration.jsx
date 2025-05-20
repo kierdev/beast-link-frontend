@@ -36,75 +36,135 @@ export default function UserRegistration() {
 		}
 	};
 
+	const [activeTab, setActiveTab] = useState("applicant");
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.formContainer}>
 				<h1 className={styles.heading}>Create Account</h1>
-				<div className={styles.toggleContainer}>
-					<button
-						type="button"
-						className={`${styles.toggleButton} ${
-							formData.role !== "faculty" ? styles.active : ""
-						}`}
-						onClick={() => setFormData((prev) => ({ ...prev, role: "applicant" }))}
-					>
-						Applicant
-					</button>
-					<button
-						type="button"
-						className={`${styles.toggleButton} ${
-							formData.role === "faculty" ? styles.active : ""
-						}`}
-						onClick={() => setFormData((prev) => ({ ...prev, role: "faculty" }))}
-					>
-						Faculty
-					</button>
+				<div className={styles.radioContainer}>
+					<div className={styles.tabs}>
+						<input
+							type="radio"
+							id="applicant"
+							name="userType"
+							value="applicant"
+							checked={activeTab === "applicant"}
+							onChange={() => setActiveTab("applicant")}
+							className={styles.radioInput}
+						/>
+						<label htmlFor="applicant" className={styles.tabLabel}>
+							Applicant
+						</label>
+						<input
+							type="radio"
+							id="faculty"
+							name="userType"
+							value="faculty"
+							checked={activeTab === "faculty"}
+							onChange={() => setActiveTab("faculty")}
+							className={styles.radioInput}
+						/>
+						<label htmlFor="faculty" className={styles.tabLabel}>
+							Faculty
+						</label>
+						<span className={styles.glider}></span>
+					</div>
 				</div>
-				<form onSubmit={handleSubmit}>
-					<input
-						type="text"
-						name="username"
-						className={styles.input}
-						placeholder="Username"
-						value={formData.username}
-						onChange={handleChange}
-						required
-					/>
-					<input
-						type="email"
-						name="email"
-						className={styles.input}
-						placeholder="Email"
-						value={formData.email}
-						onChange={handleChange}
-						required
-					/>
-					<input
-						type="password"
-						name="password"
-						className={styles.input}
-						placeholder="Password"
-						value={formData.password}
-						onChange={handleChange}
-						required
-					/>
-					{errors.password && <p className={styles.error}>{errors.password}</p>}
-					<input
-						type="password"
-						name="confirmPassword"
-						className={styles.input}
-						placeholder="Confirm Password"
-						value={formData.confirmPassword}
-						onChange={handleChange}
-						required
-					/>
-					{errors.confirmPassword && (
-						<p className={styles.error}>{errors.confirmPassword}</p>
-					)}
-					<button type="submit" className={styles.button}>
-						Register
-					</button>
-				</form>
+				{activeTab === "applicant" && (
+					<form onSubmit={handleSubmit}>
+						<input
+							type="text"
+							name="username"
+							className={styles.input}
+							placeholder="Username"
+							value={formData.username}
+							onChange={handleChange}
+							required
+						/>
+						<input
+							type="email"
+							name="email"
+							className={styles.input}
+							placeholder="Email"
+							value={formData.email}
+							onChange={handleChange}
+							required
+						/>
+						<input
+							type="password"
+							name="password"
+							className={styles.input}
+							placeholder="Password"
+							value={formData.password}
+							onChange={handleChange}
+							required
+						/>
+						{errors.password && <p className={styles.error}>{errors.password}</p>}
+						<input
+							type="password"
+							name="confirmPassword"
+							className={styles.input}
+							placeholder="Confirm Password"
+							value={formData.confirmPassword}
+							onChange={handleChange}
+							required
+						/>
+						{errors.confirmPassword && (
+							<p className={styles.error}>{errors.confirmPassword}</p>
+						)}
+						<button type="submit" className={styles.button}>
+							Register as Applicant
+						</button>
+					</form>
+				)}
+				{activeTab === "faculty" && (
+					<form onSubmit={handleSubmit}>
+						<input
+							type="text"
+							name="username"
+							className={styles.input}
+							placeholder="Username"
+							value={formData.username}
+							onChange={handleChange}
+							required
+						/>
+						<input
+							type="email"
+							name="email"
+							className={styles.input}
+							placeholder="Email"
+							value={formData.email}
+							onChange={handleChange}
+							required
+						/>
+						<input
+							type="password"
+							name="password"
+							className={styles.input}
+							placeholder="Password"
+							value={formData.password}
+							onChange={handleChange}
+							required
+						/>
+						{errors.password && <p className={styles.error}>{errors.password}</p>}
+						<input
+							type="password"
+							name="confirmPassword"
+							className={styles.input}
+							placeholder="Confirm Password"
+							value={formData.confirmPassword}
+							onChange={handleChange}
+							required
+						/>
+						{errors.confirmPassword && (
+							<p className={styles.error}>{errors.confirmPassword}</p>
+						)}
+						<button type="submit" className={styles.button}>
+							Register as Faculty
+						</button>
+					</form>
+				)}
 			</div>
 		</div>
 	);

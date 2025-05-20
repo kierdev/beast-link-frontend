@@ -6,6 +6,7 @@ export default function UserLogin() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const [activeTab, setActiveTab] = useState("applicant");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -32,7 +33,7 @@ export default function UserLogin() {
 
 		// Perform login logic here
 		setError(""); // Clear error if validation passes
-		alert("Login successful!");
+		alert(`Login successful as ${activeTab}!`);
 	};
 
 	return (
@@ -41,6 +42,34 @@ export default function UserLogin() {
 				<div className={styles.imageContainer}>{/*insert image here*/}</div>
 				<h1 className={styles.heading}>Beastlink University</h1>
 				<h3 className={styles.heading}>Login</h3>
+				<div className={styles.radioContainer}>
+					<div className={styles.tabs}>
+						<input
+							type="radio"
+							id="applicant"
+							name="userType"
+							value="applicant"
+							checked={activeTab === "applicant"}
+							onChange={() => setActiveTab("applicant")}
+							className={styles.radioInput}
+						/>
+						<label htmlFor="applicant" className={styles.tabLabel}>
+							Applicant
+						</label>
+						<input
+							type="radio"
+							id="faculty"
+							name="userType"
+							value="faculty"
+							checked={activeTab === "faculty"}
+							onChange={() => setActiveTab("faculty")}
+							className={styles.radioInput}
+						/>
+						<label htmlFor="faculty" className={styles.tabLabel}>
+							Faculty
+						</label>
+					</div>
+				</div>
 				<form onSubmit={handleSubmit}>
 					<input
 						type="email"
@@ -64,7 +93,7 @@ export default function UserLogin() {
 						Remember Me
 					</label>
 					<button type="submit" className={styles.button}>
-						Login
+						Login as {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
 					</button>
 					<Link to="/forgot-password" className={styles.forgotPassword}>
 						Forgot Password?

@@ -29,6 +29,55 @@
 }
 
 /*For toggle*/
+.radioContainer {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 2rem;
+}
+
+.tabs {
+	position: relative;
+	display: flex;
+	background: #fff;
+	border-radius: 999px;
+	border: 2px solid #0b5f4e;
+	padding: 2px;
+}
+
+.radioInput {
+	display: none;
+}
+
+.tabLabel {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 250px;
+	height: 48px;
+	font-size: 1.1rem;
+	font-weight: 500;
+	color: #222;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: color 0.2s, background 0.2s;
+	background: transparent;
+}
+
+.radioInput:checked + .tabLabel {
+	color: #fff;
+	background: #07362c;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+	.tabLabel {
+		width: 160px;
+		height: 40px;
+		font-size: 1rem;
+	}
+}
 .input {
 	display: block;
 	padding: 0.8rem;
@@ -39,6 +88,8 @@
 	width: 650px;
 	margin: 1rem 0;
 	box-sizing: border-box;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .input:focus {
