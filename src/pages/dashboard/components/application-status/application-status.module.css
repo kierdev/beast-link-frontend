@@ -1,0 +1,149 @@
+/* application-status.module.css */
+
+.sectionCard {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.sectionCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sectionCard h2 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.statusTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 16px;
+}
+
+.statusTab {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #7f8c8d;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.statusTab:hover {
+  background-color: #e9ecef;
+  color: #4a6baf;
+}
+
+.activeTab {
+  background-color: #4a6baf;
+  color: white !important;
+}
+
+.activeTab:hover {
+  background-color: #3a5a9f;
+}
+
+.statusList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.statusItem:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.statusItem h3 {
+  margin: 0 0 6px 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.statusItem p {
+  margin: 4px 0;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.statusBadge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.statusBadge.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statusBadge.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 20px;
+  color: #7f8c8d;
+  font-style: italic;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sectionCard {
+    padding: 16px;
+  }
+
+  .statusTabs {
+    flex-wrap: wrap;
+  }
+
+  .statusTab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .statusItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .statusBadge {
+    align-self: flex-end;
+  }
+}

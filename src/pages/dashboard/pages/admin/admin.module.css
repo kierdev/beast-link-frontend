@@ -191,41 +191,62 @@
 
 .tableContainer {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(1, 71, 55, 0.08);
+  overflow: hidden;
+}
+
+.tabTitle {
+  margin: 0 0 20px 5px;
+  font-size: 20px;
+  color: #333;
 }
 
 .tableHeader,
 .tableRow {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-  padding: 12px 15px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 16px 20px;
   align-items: center;
-  justify-content: center;
-  background-color: #014737;
+  color: black;
 }
 
 .tableHeader {
-  background-color: #014737;
-  font-weight: 600;
-  border-radius: 4px;
+  background: linear-gradient(90deg, #014737 80%, #09b089 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #09b089;
 }
 
 .tableRow {
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
 }
 
 .tableRow:hover {
-  background-color: #09b089;
+  background: #e6f7f2;
 }
 
 .status {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  left: 50px;
+  font-size: 13px;
+  font-weight: 600;
   text-align: center;
+  box-shadow: 0 1px 2px rgba(1, 71, 55, 0.06);
+  max-width: 120px;
+  margin: 50 auto;
 }
 
 .status.pending {

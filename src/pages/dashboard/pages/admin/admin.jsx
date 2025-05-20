@@ -75,7 +75,7 @@ export default function AdminDashboard() {
       <Sidebar activePage="dashboard" />
       <div className={styles.dashboardMain}>
         <div className={styles.dashboardHeader}>
-          <h1>Admin Dashboard</h1>
+          <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Administrator</span>
             <div
@@ -149,14 +149,24 @@ export default function AdminDashboard() {
           {/* Tab Content */}
           {activeTab === "overview" && (
             <div className={styles.contentGrid}>
-              <PieChart
+              
+              <div className={styles.chartCard}>
+                <h2 className={styles.chartTitle}>Applicantion Status</h2>
+                <p className={styles.chartSubtitle}>
+                  total applicant application status
+                </p>
+                <PieChart
                 data={data.charts.pieChartData}
                 width={250}
                 height={250}
               />
-
+              </div>
+              
               <div className={styles.chartCard}>
-                <h2>Applicants by Course</h2>
+                <h2 className={styles.chartTitle}>Applicants by Course</h2>
+                <p className={styles.chartSubtitle}>
+                  total applicant per Course
+                </p>
                 <BarChart
                   data={data.charts.barChartData}
                   width={600}
@@ -167,7 +177,10 @@ export default function AdminDashboard() {
               </div>
 
               <div className={styles.chartCardFull}>
-                <h2>Application Trends</h2>
+                <h2 className={styles.chartTitle}>Application Trends</h2>
+                <p className={styles.chartSubtitle}>
+                  total applicant per month
+                </p>
                 <LineChart
                   data={data.charts.lineChartData}
                   width={1000}
@@ -183,11 +196,10 @@ export default function AdminDashboard() {
 
           {activeTab === "applicants" && (
             <div className={styles.tableContainer}>
-              <h2>Applicant Management</h2>
+              <h2 className={styles.tabTitle}>Applicant Management</h2>
               <div className={styles.tableHeader}>
                 <span>ID</span>
                 <span>Name</span>
-                <span>Email</span>
                 <span>Course</span>
                 <span>Status</span>
                 <span>Applied Date</span>
@@ -198,7 +210,6 @@ export default function AdminDashboard() {
                   <div key={applicant.id} className={styles.tableRow}>
                     <span>{applicant.id}</span>
                     <span>{applicant.name}</span>
-                    <span>{applicant.email}</span>
                     <span>{applicant.course}</span>
                     <span
                       className={`${styles.status} ${
@@ -225,7 +236,7 @@ export default function AdminDashboard() {
 
           {activeTab === "courses" && (
             <div className={styles.tableContainer}>
-              <h2>Course Management</h2>
+              <h2 className={styles.tabTitle}>Course Management</h2>
               <div className={styles.tableHeader}>
                 <span>Code</span>
                 <span>Name</span>

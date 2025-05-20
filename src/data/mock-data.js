@@ -32,6 +32,10 @@ export const fetchAdminData = async (endpoint) => {
           { label: "May", value: 56 },
           { label: "Jun", value: 55 },
           { label: "Jul", value: 40 },
+          { label: "Aug", value: 30 },
+          { label: "Sep", value: 54 },
+          { label: "Nov", value: 32 },
+          { label: "Dec", value: 15 },
         ],
       },
       applicants: Array.from({ length: 50 }, (_, i) => ({
@@ -81,8 +85,18 @@ export const fetchAdminData = async (endpoint) => {
           seats: 60,
           enrolled: 45,
         },
-        { id: 6, code: "BSN", name: "Nursing", seats: 200, enrolled: 185 },
-        { id: 7, code: "BSED", name: "Education", seats: 90, enrolled: 72 },
+        { 
+          id: 6, 
+          code: "BSN", 
+          name: "Nursing", 
+          seats: 200, 
+          enrolled: 185 },
+        { 
+          id: 7, 
+          code: "BSED", 
+          name: "Education", 
+          seats: 90, 
+          enrolled: 72 },
         {
           id: 8,
           code: "BSM",
@@ -134,7 +148,7 @@ export const getCourses = () => {
           category: "education",
           icon: "Search",
         },
-        // ... rest of the courses
+        
       ]);
     }, 500);
   });

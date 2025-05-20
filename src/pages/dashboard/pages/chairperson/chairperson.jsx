@@ -274,7 +274,6 @@ function ApplicantsTable({ applicants }) {
       <div className={styles.tableHeader}>
         <div>ID</div>
         <div>Name</div>
-        <div>Email</div>
         <div>Status</div>
         <div>Applied Date</div>
         <div>Documents</div>
@@ -283,7 +282,6 @@ function ApplicantsTable({ applicants }) {
         <div key={applicant.id} className={styles.tableRow}>
           <div>{applicant.id}</div>
           <div>{applicant.name}</div>
-          <div>{applicant.email}</div>
           <div
             className={`${styles.statusBadge} ${
               styles[applicant.status.toLowerCase()]
