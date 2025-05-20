@@ -3,145 +3,9 @@ import styles from "./applicant.module.css";
 import CourseDetails from "../../components/course-details/course-details";
 import NotificationsDropdown from "../../components/notifications/notifications";
 import Sidebar from "../../../../components/side-bar/side-bar";
-import {
-  Bell,
-  Search,
-  Calendar,
-  User,
-  Globe,
-  Monitor,
-  Users,
-  Building,
-  GraduationCap,
-  DollarSign,
-} from "lucide-react";
-
-// Mock data service
-const MockDataService = {
-  getCourses: () => [
-    {
-      id: 1,
-      title: "Computer Science",
-      count: "5,000+ Courses",
-      description:
-        "Covers algorithms, programming, and problem-solving, essential for computing and software development.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Monitor />,
-    },
-    {
-      id: 2,
-      title: "Special Education",
-      count: "5,000+ Courses",
-      description:
-        "Equips teachers with strategies to support students with disabilities and special needs, promoting inclusive and adaptive learning.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <Search />,
-    },
-    {
-      id: 3,
-      title: "Computer Engineering",
-      count: "5,000+ Courses",
-      description:
-        "Covers hardware, software, and embedded systems, essential for designing and optimizing computing technologies.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Monitor />,
-    },
-    {
-      id: 4,
-      title: "Accountancy",
-      count: "5,000+ Courses",
-      description:
-        "Prepares students for careers in accounting, auditing, and taxation, with a strong focus on financial reporting and CPA licensure.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <DollarSign />,
-    },
-    {
-      id: 5,
-      title: "Information Technology",
-      count: "5,000+ Courses",
-      description:
-        "Covers networking, cybersecurity, and software development, essential for IT support and system management.",
-      college: "College of Technology",
-      date: "Apr 25, 2025",
-      category: "technology",
-      icon: <Globe />,
-    },
-    {
-      id: 6,
-      title: "Human Resource Development Management",
-      count: "5,000+ Courses",
-      description:
-        "Equips students with skills in recruitment, training, and labor relations, essential for effective workforce management and organizational development.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <Users />,
-    },
-    {
-      id: 7,
-      title: "Elementary Education",
-      count: "5,000+ Courses",
-      description:
-        "Prepares future teachers for primary education, focusing on child development, pedagogy, and subject-specific teaching for Grades 1-6.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <Building />,
-    },
-    {
-      id: 8,
-      title: "Financial Management",
-      count: "5,000+ Courses",
-      description:
-        "Teaches financial analysis, investment strategies, and risk management, preparing students for careers in banking, corporate finance, and investment planning.",
-      college: "College of Business and Accountancy",
-      date: "Apr 25, 2025",
-      category: "business",
-      icon: <DollarSign />,
-    },
-    {
-      id: 9,
-      title: "Secondary Education",
-      count: "5,000+ Courses",
-      description:
-        "Trains educators to teach in junior and senior high school (Grades 7-12), specializing in subjects like Math, Science, English, or Social Studies.",
-      college: "College of Education",
-      date: "Apr 25, 2025",
-      category: "education",
-      icon: <GraduationCap />,
-    },
-  ],
-  getApplications: () => [
-    {
-      id: 1,
-      name: "Computer Science",
-      date: "2025-02-15",
-      status: "pending",
-    },
-    {
-      id: 2,
-      name: "Human Resource Development Management",
-      date: "2025-02-20",
-      status: "pending",
-    },
-  ],
-  getProgress: () => [
-    { label: "Application", status: "completed" },
-    { label: "Document", status: "completed" },
-    { label: "Exam", status: "completed" },
-    { label: "Interview", status: "current" },
-    { label: "Decision", status: "upcoming" },
-    { label: "Enrollment", status: "upcoming" },
-  ],
-};
+import { Bell, Search, Calendar, User, Monitor } from "lucide-react";
+import { getApplicantDashboardData } from "../../../../data/dashboard-service";
+import { LoadingSpinner } from "../../../../components/loading/loading";
 
 export default function ApplicantDashboard() {
   // State for search and filter functionality
@@ -153,16 +17,29 @@ export default function ApplicantDashboard() {
   // State for course details modal and notifications
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Refs for click outside detection
   const notificationsRef = useRef(null);
   const bellIconRef = useRef(null);
 
-  // Load mock data
   useEffect(() => {
-    setCourses(MockDataService.getCourses());
-    setApplications(MockDataService.getApplications());
-    setProgress(MockDataService.getProgress);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await getApplicantDashboardData();
+        const { courses, applications, progress } = response;
+        setCourses(courses);
+        setApplications(applications);
+        setProgress(progress);
+      } catch (error) {
+        console.error("Error fetching interviewer data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Handle click outside to close notifications
@@ -211,6 +88,9 @@ export default function ApplicantDashboard() {
     setShowNotifications(!showNotifications);
   };
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className={styles.dashboardLayout}>
       <Sidebar activePage="dashboard" />
@@ -316,7 +196,7 @@ export default function ApplicantDashboard() {
                       styles[course.category]
                     }`}
                   >
-                    {course.icon}
+                    {<Monitor />}
                   </div>
                   <div className={styles.courseContent}>
                     <div className={styles.courseHeader}>
@@ -391,16 +271,6 @@ export default function ApplicantDashboard() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Application Form */}
-          <div className={styles.formCard}>
-            <h2 className={styles.formTitle}>Application Form</h2>
-            <p className={styles.formDescription}>
-              A section with a direct link to the online application portal to
-              view and submit personal details, academic records, and documents.
-            </p>
-            <button className={styles.viewButton}>View</button>
           </div>
         </div>
 

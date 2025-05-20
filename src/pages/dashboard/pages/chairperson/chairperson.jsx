@@ -18,56 +18,7 @@ import {
 } from "lucide-react";
 import { toPercent } from "../../../../utils/numberUtils";
 import PieChart from "../../components/pie-chart/pie-chart";
-
-// Mock data service
-const MockDataService = {
-  getProgramStatistics: () => ({
-    totalApplicants: 125,
-    passedApplicants: 75,
-    failedApplicants: 30,
-    pendingApplicants: 20,
-    department: "Information Technology",
-    unreadNotifications: 3,
-    examScoreDistribution: [
-      { label: "90-100", value: 15 },
-      { label: "80-89", value: 30 },
-      { label: "70-79", value: 20 },
-      { label: "60-69", value: 10 },
-      { label: "Below 60", value: 10 },
-    ],
-  }),
-  getApplicants: () =>
-    Array.from({ length: 25 }, (_, i) => ({
-      id: `APP-${1000 + i}`,
-      name: `Applicant ${i + 1}`,
-      email: `applicant${i + 1}@example.com`,
-      status: ["Pending", "Approved", "Rejected"][i % 3],
-      appliedDate: new Date(Date.now() - i * 86400000)
-        .toISOString()
-        .split("T")[0],
-      documents: i % 4 === 0 ? "Incomplete" : "Complete",
-    })),
-  getExams: () => [
-    {
-      id: "EXM-001",
-      name: "Entrance Exam - Spring 2023",
-      date: "2023-03-15",
-      time: "09:00 AM",
-      location: "Building A, Room 101",
-      status: "Completed",
-      participants: 45,
-    },
-    {
-      id: "EXM-002",
-      name: "Make-up Exam",
-      date: "2023-04-10",
-      time: "01:00 PM",
-      location: "Building B, Room 205",
-      status: "Scheduled",
-      participants: 12,
-    },
-  ],
-};
+import { getChairpersonDashboardData } from "../../../../data/dashboard-service";
 
 export default function ChairpersonDashboard() {
   const [data, setData] = useState(null);
@@ -84,7 +35,8 @@ export default function ChairpersonDashboard() {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const response = MockDataService.getProgramStatistics();
+        const response = await getChairpersonDashboardData("BSIT");
+        console.log(response);
         setData(response);
       } catch (err) {
         console.error("Error loading dashboard data:", err);
@@ -101,9 +53,9 @@ export default function ChairpersonDashboard() {
     const fetchTabData = async () => {
       try {
         if (activeTab === "applicants" && applicants.length === 0) {
-          setApplicants(MockDataService.getApplicants());
+          setApplicants(data.applicants);
         } else if (activeTab === "exams" && exams.length === 0) {
-          setExams(MockDataService.getExams());
+          setExams(data.exams);
         }
       } catch (err) {
         console.error(`Error loading ${activeTab} data:`, err);
@@ -167,22 +119,22 @@ export default function ChairpersonDashboard() {
           <div className={styles.statsGrid}>
             <StatCard
               title="Total Applicants"
-              value={data.totalApplicants}
+              value={data.programStatistics.totalApplicants}
               icon={<Users />}
             />
             <StatCard
               title="Passed Applicants"
-              value={data.passedApplicants}
+              value={data.programStatistics.passedApplicants}
               icon={<UserCheck />}
             />
             <StatCard
               title="Failed Applicants"
-              value={data.failedApplicants}
+              value={data.programStatistics.failedApplicants}
               icon={<UserX />}
             />
             <StatCard
               title="Pending Applications"
-              value={data.pendingApplicants}
+              value={data.programStatistics.pendingApplicants}
               icon={<Book />}
             />
           </div>
@@ -229,24 +181,24 @@ export default function ChairpersonDashboard() {
                     {
                       label: "Failed",
                       value: toPercent(
-                        data.totalApplicants,
-                        data.failedApplicants
+                        data.programStatistics.totalApplicants,
+                        data.programStatistics.failedApplicants
                       ),
                       color: "#FF0000",
                     },
                     {
                       label: "Passed",
                       value: toPercent(
-                        data.totalApplicants,
-                        data.passedApplicants
+                        data.programStatistics.totalApplicants,
+                        data.programStatistics.passedApplicants
                       ),
                       color: "#00ff00",
                     },
                     {
                       label: "Pending",
                       value: toPercent(
-                        data.totalApplicants,
-                        data.pendingApplicants
+                        data.programStatistics.totalApplicants,
+                        data.programStatistics.pendingApplicants
                       ),
                       color: "#ffa500",
                     },
@@ -264,16 +216,18 @@ export default function ChairpersonDashboard() {
                 </p>
                 <div className={styles.chartContent}>
                   <div className={styles.barChart}>
-                    {data.examScoreDistribution.map((item, index) => (
-                      <div
-                        key={index}
-                        className={styles.barChartBar}
-                        style={{ height: `${item.value * 2}px` }}
-                      >
-                        <span className={styles.barValue}>{item.value}</span>
-                        <span className={styles.barLabel}>{item.label}</span>
-                      </div>
-                    ))}
+                    {data.programStatistics.examScoreDistribution.map(
+                      (item, index) => (
+                        <div
+                          key={index}
+                          className={styles.barChartBar}
+                          style={{ height: `${item.value * 2}px` }}
+                        >
+                          <span className={styles.barValue}>{item.value}</span>
+                          <span className={styles.barLabel}>{item.label}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>

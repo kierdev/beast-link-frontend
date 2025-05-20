@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./interviewer.module.css";
 import NotificationsDropdown from "../../components/notifications/notifications";
 import Sidebar from "../../../../components/side-bar/side-bar";
 import { Bell } from "lucide-react";
-
+import { LoadingSpinner } from "../../../../components/loading/loading";
 import {
   Calendar,
   CheckCircle,
@@ -15,88 +15,42 @@ import {
   MapPin,
   Pen,
 } from "lucide-react";
-
-// Mock data service
-const MockDataService = {
-  getDashboardStats: () => ({
-    todaysInterviews: 2,
-    passedInterviews: 3,
-    failedInterviews: 1,
-    pendingRemarks: 1,
-  }),
-  getUpcomingInterviews: () => [
-    {
-      id: 1,
-      name: "John Doe",
-      date: "March 16, 2025",
-      time: "10:00 AM",
-      program: "Computer Science",
-      location: "Room 101, Main Building",
-      status: "scheduled",
-    },
-    {
-      id: 2,
-      name: "Robert Wilson",
-      date: "March 20, 2025",
-      time: "9:00 AM",
-      program: "Human Management",
-      location: "Room 105, Management Building",
-      status: "scheduled",
-    },
-    {
-      id: 3,
-      name: "David Miller",
-      date: "March 22, 2025",
-      time: "10:30 AM",
-      program: "Information Technology",
-      location: "Room 102, IT Building",
-      status: "scheduled",
-    },
-  ],
-  getPendingRemarks: () => [
-    {
-      id: 4,
-      name: "Sarah Johnson",
-      date: "March 15, 2025",
-      time: "2:00 PM",
-      program: "Computer Science",
-      location: "Room 101, Main Building",
-      status: "pending",
-    },
-  ],
-  getCompletedInterviews: () => [
-    {
-      id: 5,
-      name: "Michael Brown",
-      date: "March 14, 2025",
-      time: "11:00 AM",
-      program: "Information Technology",
-      location: "Room 102, IT Building",
-      status: "completed",
-      result: "passed",
-    },
-    {
-      id: 6,
-      name: "Emily Davis",
-      date: "March 13, 2025",
-      time: "3:00 PM",
-      program: "Human Management",
-      location: "Room 105, Management Building",
-      status: "completed",
-      result: "failed",
-    },
-  ],
-};
+import { getInterviewerDashboardData } from "../../../../data/dashboard-service";
 
 export default function InterviewerDashboard() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [showNotifications, setShowNotifications] = useState(false);
+  const [stats, setStats] = useState(null);
+  const [upcomingInterviews, setUpcomingInterviews] = useState([]);
+  const [pendingRemarks, setPendingRemarks] = useState([]);
+  const [completedInterviews, setCompletedInterviews] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Get mock data based on active tab
-  const stats = MockDataService.getDashboardStats();
-  const upcomingInterviews = MockDataService.getUpcomingInterviews();
-  const pendingRemarks = MockDataService.getPendingRemarks();
-  const completedInterviews = MockDataService.getCompletedInterviews();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await getInterviewerDashboardData();
+        const {
+          dashboardStats,
+          upcomingInterviews,
+          pendingRemarks,
+          completedInterviews,
+        } = response;
+
+        setStats(dashboardStats);
+        setUpcomingInterviews(upcomingInterviews);
+        setPendingRemarks(pendingRemarks);
+        setCompletedInterviews(completedInterviews);
+      } catch (error) {
+        console.error("Error fetching interviewer data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Get the appropriate data based on active tab
   const getActiveTabData = () => {
@@ -129,6 +83,9 @@ export default function InterviewerDashboard() {
         return "Upcoming Interviews";
     }
   };
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className={styles.dashboardLayout}>
@@ -158,22 +115,22 @@ export default function InterviewerDashboard() {
           <div className={styles.statsGrid}>
             <StatCard
               title="Today's Interviews"
-              value={stats.todaysInterviews}
+              value={stats?.todaysInterviews}
               icon={<Calendar />}
             />
             <StatCard
               title="Passed Interviews"
-              value={stats.passedInterviews}
+              value={stats?.passedInterviews}
               icon={<CheckCircle />}
             />
             <StatCard
               title="Failed Interviews"
-              value={stats.failedInterviews}
+              value={stats?.failedInterviews}
               icon={<XCircle />}
             />
             <StatCard
               title="Pending Remarks"
-              value={stats.pendingRemarks}
+              value={stats?.pendingRemarks}
               icon={<Edit2 />}
             />
           </div>

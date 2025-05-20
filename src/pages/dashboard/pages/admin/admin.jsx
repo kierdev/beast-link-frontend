@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./admin.module.css";
-import {
-  Users,
-  UserCheck,
-  UserX,
-  Book,
-  Bell,
-  GraduationCap,
-} from "lucide-react";
+import { Users, UserCheck, UserX, Book, Bell } from "lucide-react";
 import NotificationDropdown from "../../components/notifications/notifications";
 import { LoadingSpinner } from "../../../../components/loading/loading";
 import Sidebar from "../../../../components/side-bar/side-bar";
@@ -18,7 +11,7 @@ import BarChart from "../../components/bar-chart/bar-chart";
 import LineChart from "../../components/line-chart/line-chart";
 import ScrollArea from "../../../../components/scroll-area/scroll-area";
 import { toPercent } from "../../../../utils/numberUtils";
-import { MockDataService } from "../../../../data/mock-data";
+import { getAdminDashboardData } from "../../../../data/dashboard-service";
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
@@ -33,11 +26,8 @@ export default function AdminDashboard() {
     const fetchInitialData = async () => {
       setLoading(true);
       try {
-        const [dashboardData, applicantsData, coursesData] = await Promise.all([
-          MockDataService.fetchData("/dashboard"),
-          MockDataService.fetchData("/applicants"),
-          MockDataService.fetchData("/courses"),
-        ]);
+        const dashboardData = await getAdminDashboardData();
+        console.log(dashboardData);
 
         // Calculate percentages for pie chart
         const totalApplicants = dashboardData.stats.totalApplicants;
@@ -55,8 +45,8 @@ export default function AdminDashboard() {
             pieChartData: pieDataWithPercentages,
           },
         });
-        setApplicants(applicantsData.applicants);
-        setCourses(coursesData.courses);
+        setApplicants(dashboardData.applicants);
+        setCourses(dashboardData.courses);
       } catch (err) {
         console.error("Error loading data:", err);
         setError(err.message);
@@ -70,22 +60,6 @@ export default function AdminDashboard() {
 
   const handleTabChange = async (tab) => {
     setActiveTab(tab);
-    // Simulate loading data when switching to these tabs
-    if (tab === "applicants" && applicants.length === 0) {
-      try {
-        const { applicants } = await MockDataService.fetchData("/applicants");
-        setApplicants(applicants);
-      } catch (err) {
-        console.error("Error loading applicants:", err);
-      }
-    } else if (tab === "courses" && courses.length === 0) {
-      try {
-        const { courses } = await MockDataService.fetchData("/courses");
-        setCourses(courses);
-      } catch (err) {
-        console.error("Error loading courses:", err);
-      }
-    }
   };
 
   if (error) {

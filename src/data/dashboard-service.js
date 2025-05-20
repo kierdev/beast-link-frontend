@@ -1,18 +1,16 @@
-const API_BASE_URL = "https://beast-link-backend-git-development-knthlxs-projects.vercel.app/api/api";
+const API_BASE_URL = "http://127.0.0.1:8000/api";
 
-export async function getApplicantDashboard(applicantId) {
-  const response = await fetch(
-    `${API_BASE_URL}/applicant/dashboard?applicant_id=${applicantId}`
-  );
+export async function getApplicantDashboardData() {
+  const response = await fetch(`${API_BASE_URL}/applicant/dashboard`);
   if (!response.ok) {
     throw new Error("Failed to fetch applicant dashboard data");
   }
   return response.json();
 }
 
-export async function getProgramStatistics(programCode) {
+export async function getChairpersonDashboardData(programCode) {
   const response = await fetch(
-    `${API_BASE_URL}/program/statistics?program_code=${programCode}`
+    `${API_BASE_URL}/chairperson/dashboard?program_code=${programCode}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch program statistics");
@@ -20,7 +18,7 @@ export async function getProgramStatistics(programCode) {
   return response.json();
 }
 
-export async function getInterviewerDashboard() {
+export async function getInterviewerDashboardData() {
   const response = await fetch(`${API_BASE_URL}/interviewer/dashboard`);
   if (!response.ok) {
     throw new Error("Failed to fetch interviewer dashboard data");
@@ -28,7 +26,7 @@ export async function getInterviewerDashboard() {
   return response.json();
 }
 
-export async function getAdminDashboard() {
+export async function getAdminDashboardData() {
   const response = await fetch(`${API_BASE_URL}/admin/dashboard`);
   if (!response.ok) {
     throw new Error("Failed to fetch admin dashboard data");
