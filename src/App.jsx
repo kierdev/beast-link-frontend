@@ -3,7 +3,7 @@ import ApplicantDashboard from "./pages/dashboard/pages/applicant/applicant";
 import InterviewerDashboard from "./pages/dashboard/pages/interviewer/interviewer";
 import ChairpersonDashboard from "./pages/dashboard/pages/chairperson/chairperson";
 import AdminDashboard from "./pages/dashboard/pages/admin/admin";
-import ModuleNotice from "./pages/dashboard/faculty";
+import ModuleNotice from "./pages/dashboard/module";
 
 export default function App() {
   return (
