@@ -334,7 +334,7 @@ function NewApplicationCard() {
 
   const handleApplyClick = () => {
     // Navigate to the application module
-    navigate("/applications/new");
+    navigate("/dashboard/module");
   };
 
   return (
