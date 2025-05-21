@@ -284,7 +284,7 @@ function StatsCard() {
         </div>
         <div className={styles.statsInfo}>
           <div className={styles.statsLabel}>Student</div>
-          <div className={styles.statsValue}>50,000+</div>
+          <div className={styles.statsValue}>5,000+</div>
         </div>
       </div>
     </div>

@@ -221,28 +221,6 @@ export default function AdminDashboard() {
               </div>
               <AcceptanceRateGraph data={admissionData} />
               <InterviewResultsGraph data={interviewData} />
-              <div>
-                <h1>Admission Interview Schedule</h1>
-                <InterviewCalendar
-                  interviews={interviews}
-                  onDateClick={handleDateClick}
-                />
-
-                {selectedDate && (
-                  <div className="selected-date">
-                    <h3>Interviews on {selectedDate}</h3>
-                    <ul>
-                      {interviews
-                        .filter((i) => i.date === selectedDate)
-                        .map((interview, index) => (
-                          <li key={index}>
-                            {interview.applicant} - {interview.program}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
             </div>
           )}
 

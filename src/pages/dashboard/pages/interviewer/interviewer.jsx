@@ -7,7 +7,7 @@ import Sidebar from "../../../../components/side-bar/side-bar";
 import { Bell } from "lucide-react";
 import { LoadingSpinner } from "../../../../components/loading/loading";
 import {
-  Calendar,
+  Calendar as CalendarIcon,
   CheckCircle,
   XCircle,
   Edit2,
@@ -16,6 +16,8 @@ import {
   Pen,
 } from "lucide-react";
 import { getInterviewerDashboardData } from "../../../../data/dashboard-service";
+import InterviewCalendar from "../../components/interview-calendar/interview-calendar";
+import ScrollArea from "../../../../components/scroll-area/scroll-area";
 
 export default function InterviewerDashboard() {
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -25,8 +27,10 @@ export default function InterviewerDashboard() {
   const [pendingRemarks, setPendingRemarks] = useState([]);
   const [completedInterviews, setCompletedInterviews] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -52,7 +56,29 @@ export default function InterviewerDashboard() {
     fetchData();
   }, []);
 
-  // Get the appropriate data based on active tab
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+  };
+
+  const getCalendarInterviews = () => {
+    return [...upcomingInterviews, ...pendingRemarks, ...completedInterviews].map(interview => ({
+      date: interview.date,
+      applicant: interview.name,
+      program: interview.program,
+      time: interview.time,
+      location: interview.location,
+      status: interview.status,
+      id: interview.id
+    }));
+  };
+
+  const getDateInterviews = () => {
+    if (!selectedDate) return [];
+    return [...upcomingInterviews, ...pendingRemarks].filter(
+      interview => interview.date === selectedDate
+    );
+  };
+
   const getActiveTabData = () => {
     switch (activeTab) {
       case "upcoming":
@@ -62,13 +88,12 @@ export default function InterviewerDashboard() {
       case "completed":
         return completedInterviews;
       case "calendar":
-        return [...upcomingInterviews, ...pendingRemarks];
+        return getDateInterviews();
       default:
         return upcomingInterviews;
     }
   };
 
-  // Get the appropriate title based on active tab
   const getActiveTabTitle = () => {
     switch (activeTab) {
       case "upcoming":
@@ -78,11 +103,12 @@ export default function InterviewerDashboard() {
       case "completed":
         return "Completed Interviews";
       case "calendar":
-        return "Calendar View";
+        return "Interview Schedule";
       default:
         return "Upcoming Interviews";
     }
   };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -116,7 +142,7 @@ export default function InterviewerDashboard() {
             <StatCard
               title="Today's Interviews"
               value={stats?.todaysInterviews}
-              icon={<Calendar />}
+              icon={<CalendarIcon />}
             />
             <StatCard
               title="Passed Interviews"
@@ -143,7 +169,7 @@ export default function InterviewerDashboard() {
               }`}
               onClick={() => setActiveTab("upcoming")}
             >
-              Upcoming Interviews
+              Upcoming
             </button>
             <button
               className={`${styles.filterTab} ${
@@ -159,7 +185,7 @@ export default function InterviewerDashboard() {
               }`}
               onClick={() => setActiveTab("completed")}
             >
-              Completed Interviews
+              Completed
             </button>
             <button
               className={`${styles.filterTab} ${
@@ -167,27 +193,64 @@ export default function InterviewerDashboard() {
               }`}
               onClick={() => setActiveTab("calendar")}
             >
-              Calendar View
+              Calendar
             </button>
           </div>
 
           <h2 className={styles.sectionTitle}>{getActiveTabTitle()}</h2>
 
-          {/* Interview Cards */}
-          <div className={styles.interviewGrid}>
-            {getActiveTabData().map((interview) => (
-              <InterviewCard
-                key={interview.id}
-                name={interview.name}
-                date={interview.date}
-                time={interview.time}
-                program={interview.program}
-                location={interview.location}
-                status={interview.status}
-                result={interview.result}
-              />
-            ))}
-          </div>
+          {activeTab === "calendar" ? (
+            <div className={styles.calendarView}>
+              <div className={styles.calendarContainer}>
+                <InterviewCalendar
+                  interviews={getCalendarInterviews()}
+                  onDateClick={handleDateClick}
+                />
+              </div>
+              {selectedDate && (
+                <div className={styles.interviewList}>
+                  <h3>Interviews on {selectedDate}</h3>
+                  <ScrollArea maxHeight="400px">
+                    {getActiveTabData().length > 0 ? (
+                      getActiveTabData().map((interview) => (
+                        <InterviewCard
+                          key={interview.id}
+                          name={interview.name}
+                          date={interview.date}
+                          time={interview.time}
+                          program={interview.program}
+                          location={interview.location}
+                          status={interview.status}
+                          result={interview.result}
+                        />
+                      ))
+                    ) : (
+                      <p className={styles.noInterviews}>
+                        No interviews scheduled for this date
+                      </p>
+                    )}
+                  </ScrollArea>
+                </div>
+              )}
+            </div>
+          ) : (
+            <ScrollArea maxHeight="600px">
+              <div className={styles.interviewGrid}>
+                {getActiveTabData().map((interview) => (
+                  <InterviewCard
+                    key={interview.id}
+                    name={interview.name}
+                    date={interview.date}
+                    time={interview.time}
+                    program={interview.program}
+                    location={interview.location}
+                    status={interview.status}
+                    result={interview.result}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          )}
         </div>
       </div>
     </div>
@@ -229,7 +292,7 @@ function InterviewCard({
       </div>
       <div className={styles.interviewDetails}>
         <div className={styles.interviewDetail}>
-          <Calendar className={styles.detailIcon} />
+          <CalendarIcon className={styles.detailIcon} />
           <span>{date}</span>
         </div>
         <div className={styles.interviewDetail}>

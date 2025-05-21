@@ -174,3 +174,73 @@ export const getApplications = () => {
     }, 500);
   });
 };
+
+export const mockInterviewData = [
+  {
+    id: 1,
+    name: "John Doe",
+    date: new Date().toISOString().split('T')[0], // Today's date
+    time: "10:00 AM",
+    program: "Computer Science",
+    location: "Room 101",
+    status: "scheduled",
+    result: ""
+  },
+  {
+    id: 2,
+    name: "Alice Johnson",
+    date: new Date().toISOString().split('T')[0], // Today's date
+    time: "2:30 PM",
+    program: "Medicine",
+    location: "Room 205",
+    status: "scheduled",
+    result: ""
+  },
+  {
+    id: 3,
+    name: "Jane Smith",
+    date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0], // 2 days from now
+    time: "9:00 AM",
+    program: "Business Administration",
+    location: "Room 102",
+    status: "pending",
+    result: ""
+  },
+  {
+    id: 4,
+    name: "Mike Brown",
+    date: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0], // 3 days from now
+    time: "11:00 AM",
+    program: "Electrical Engineering",
+    location: "Room 103",
+    status: "completed",
+    result: "passed"
+  },
+  {
+    id: 5,
+    name: "Sarah Williams",
+    date: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0], // 5 days from now
+    time: "3:00 PM",
+    program: "Law",
+    location: "Room 201",
+    status: "completed",
+    result: "failed"
+  },
+  {
+    id: 6,
+    name: "David Lee",
+    date: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0], // 1 week from now
+    time: "1:30 PM",
+    program: "Architecture",
+    location: "Room 104",
+    status: "scheduled",
+    result: ""
+  }
+];
+
+export const mockDashboardStats = {
+  todaysInterviews: 2,
+  passedInterviews: 1,
+  failedInterviews: 1,
+  pendingRemarks: 1
+};
