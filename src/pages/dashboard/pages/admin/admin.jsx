@@ -406,7 +406,7 @@ export default function AdminDashboard() {
                   >
                     <option value="all">All</option>
                     <option value="high">High (75%+)</option>
-                    <option value="medium">Medium (50-75%)</option>
+                    <option value="medium">Moderate (50-75%)</option>
                     <option value="low">Low (&lt;50%)</option>
                   </select>
                 </div>
