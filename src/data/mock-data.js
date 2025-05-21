@@ -168,7 +168,7 @@ export const getApplications = () => {
           id: 2,
           name: "Human Resource Development Management",
           date: "2025-02-20",
-          status: "pending",
+          status: "passed",
         },
       ]);
     }, 500);

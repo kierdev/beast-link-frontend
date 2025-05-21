@@ -14,7 +14,7 @@ import { toPercent } from "../../../../utils/numberUtils";
 import { getAdminDashboardData } from "../../../../data/dashboard-service";
 import AcceptanceRateGraph from "../../components/acceptance-rate-graph/acceptance-rate-graph";
 import InterviewResultsGraph from "../../components/interview-results-graph/interview-results-graph";
-import InterviewCalendar from "../../components/interview-calendar/interview-calendar";
+
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
@@ -23,13 +23,18 @@ export default function AdminDashboard() {
   const [applicants, setApplicants] = useState([]);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [interviews, setInterviews] = useState([
-    { date: "2023-06-15", applicant: "John Doe", program: "Computer Science" },
-    { date: "2023-06-15", applicant: "Alice Johnson", program: "Medicine" },
-    { date: "2023-06-20", applicant: "Jane Smith", program: "Business" },
-    { date: "2023-07-05", applicant: "Mike Brown", program: "Engineering" },
-  ]);
+
+  // Applicant filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [documentFilter, setDocumentFilter] = useState("all");
+  const [courseFilter, setCourseFilter] = useState("all");
+
+  // Course filter states
+  const [courseSearchTerm, setCourseSearchTerm] = useState("");
+  const [availabilityFilter, setAvailabilityFilter] = useState("all");
+  const [enrollmentFilter, setEnrollmentFilter] = useState("all");
+
   const admissionData = [
     { name: "Computer Science", acceptanceRate: 12 },
     { name: "Business Admin", acceptanceRate: 28 },
@@ -38,6 +43,7 @@ export default function AdminDashboard() {
     { name: "Medicine", acceptanceRate: 8 },
     { name: "Law", acceptanceRate: 22 },
   ];
+
   const interviewData = [
     { name: "Computer Science", passed: 120, failed: 180 },
     { name: "Business", passed: 150, failed: 90 },
@@ -46,11 +52,53 @@ export default function AdminDashboard() {
     { name: "Medicine", passed: 60, failed: 140 },
     { name: "Law", passed: 90, failed: 60 },
   ];
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    // You could fetch interviews for this date or show a modal
-    console.log("Selected date:", date);
-  };
+
+  // Filter applicants
+  const filteredApplicants = applicants.filter(applicant => {
+    const matchesSearch = 
+      applicant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      applicant.id.toString().includes(searchTerm);
+    
+    const matchesStatus = 
+      statusFilter === "all" || 
+      applicant.status.toLowerCase() === statusFilter.toLowerCase();
+    
+    const matchesDocuments = 
+      documentFilter === "all" || 
+      applicant.documents.toLowerCase() === documentFilter.toLowerCase();
+    
+    const matchesCourse = 
+      courseFilter === "all" || 
+      applicant.course.toLowerCase().includes(courseFilter.toLowerCase());
+    
+    return matchesSearch && matchesStatus && matchesDocuments && matchesCourse;
+  });
+
+  // Filter courses
+  const filteredCourses = courses.filter(course => {
+    const matchesSearch = 
+      course.name.toLowerCase().includes(courseSearchTerm.toLowerCase()) ||
+      course.code.toLowerCase().includes(courseSearchTerm.toLowerCase());
+    
+    const matchesAvailability = 
+      availabilityFilter === "all" ||
+      (availabilityFilter === "available" && (course.seats - course.enrolled) > 0) ||
+      (availabilityFilter === "full" && (course.seats - course.enrolled) <= 0);
+    
+    const matchesEnrollment = 
+      enrollmentFilter === "all" ||
+      (enrollmentFilter === "high" && (course.enrolled / course.seats) >= 0.75) ||
+      (enrollmentFilter === "medium" && 
+        (course.enrolled / course.seats) >= 0.5 && 
+        (course.enrolled / course.seats) < 0.75) ||
+      (enrollmentFilter === "low" && (course.enrolled / course.seats) < 0.5);
+    
+    return matchesSearch && matchesAvailability && matchesEnrollment;
+  });
+
+  // Get unique course names for applicant filter dropdown
+  const uniqueCourses = [...new Set(applicants.map(applicant => applicant.course))];
+
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
@@ -58,7 +106,6 @@ export default function AdminDashboard() {
         const dashboardData = await getAdminDashboardData();
         console.log(dashboardData);
 
-        // Calculate percentages for pie chart
         const totalApplicants = dashboardData.stats.totalApplicants;
         const pieDataWithPercentages = dashboardData.charts.pieChartData.map(
           (item) => ({
@@ -123,7 +170,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className={styles.dashboardContent}>
-          {/* Stats Cards - Always visible */}
           <div className={styles.statsGrid}>
             <StatCard
               title="Total Applicants"
@@ -147,7 +193,6 @@ export default function AdminDashboard() {
             />
           </div>
 
-          {/* Navigation Tabs */}
           <div className={styles.filterTabs}>
             <button
               className={`${styles.filterTab} ${
@@ -175,7 +220,6 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          {/* Tab Content */}
           {activeTab === "overview" && (
             <div className={styles.contentGrid}>
               <div className={styles.chartCard}>
@@ -226,7 +270,66 @@ export default function AdminDashboard() {
 
           {activeTab === "applicants" && (
             <div className={styles.tableContainer}>
-              <h2 className={styles.tabTitle}>Applicant Management</h2>
+              <h2 className={styles.tabTitles}>Applicant Management</h2>
+              
+              <div className={styles.filterControls}>
+                <div className={styles.filterGroup}>
+                  <input
+                    type="text"
+                    placeholder="Search by name or ID..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={styles.searchInput}
+                    
+                  />
+                  
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label htmlFor="status-filter">Status:</label>
+                  <select
+                    id="status-filter"
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label htmlFor="doc-filter">Documents:</label>
+                  <select
+                    id="doc-filter"
+                    value={documentFilter}
+                    onChange={(e) => setDocumentFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All</option>
+                    <option value="complete">Complete</option>
+                    <option value="incomplete">Incomplete</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label htmlFor="course-filter">Course:</label>
+                  <select
+                    id="course-filter"
+                    value={courseFilter}
+                    onChange={(e) => setCourseFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All Courses</option>
+                    {uniqueCourses.map(course => (
+                      <option key={course} value={course}>{course}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <div className={styles.tableHeader}>
                 <span>ID</span>
                 <span>Name</span>
@@ -236,7 +339,7 @@ export default function AdminDashboard() {
                 <span>Documents</span>
               </div>
               <ScrollArea maxHeight="500px">
-                {applicants.map((applicant) => (
+                {filteredApplicants.map((applicant) => (
                   <div key={applicant.id} className={styles.tableRow}>
                     <span>{applicant.id}</span>
                     <span>{applicant.name}</span>
@@ -266,7 +369,49 @@ export default function AdminDashboard() {
 
           {activeTab === "courses" && (
             <div className={styles.tableContainer}>
-              <h2 className={styles.tabTitle}>Course Management</h2>
+              <h2 className={styles.tabTitles}>Course Management</h2>
+              
+              <div className={styles.filterControls}>
+                <div className={styles.filterGroup}>
+                  <input
+                    type="text"
+                    placeholder="Search by name or code..."
+                    value={courseSearchTerm}
+                    onChange={(e) => setCourseSearchTerm(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label htmlFor="availability-filter">Availability:</label>
+                  <select
+                    id="availability-filter"
+                    value={availabilityFilter}
+                    onChange={(e) => setAvailabilityFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All</option>
+                    <option value="available">Available</option>
+                    <option value="full">Full</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label htmlFor="enrollment-filter">Enrollment:</label>
+                  <select
+                    id="enrollment-filter"
+                    value={enrollmentFilter}
+                    onChange={(e) => setEnrollmentFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All</option>
+                    <option value="high">High (75%+)</option>
+                    <option value="medium">Medium (50-75%)</option>
+                    <option value="low">Low (&lt;50%)</option>
+                  </select>
+                </div>
+              </div>
+
               <div className={styles.tableHeader}>
                 <span>Code</span>
                 <span>Name</span>
@@ -276,7 +421,7 @@ export default function AdminDashboard() {
                 <span>Fill Rate</span>
               </div>
               <ScrollArea maxHeight="500px">
-                {courses.map((course) => {
+                {filteredCourses.map((course) => {
                   const available = course.seats - course.enrolled;
                   const fillRate = (
                     (course.enrolled / course.seats) *

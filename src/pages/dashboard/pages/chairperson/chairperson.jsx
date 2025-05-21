@@ -31,6 +31,16 @@ export default function ChairpersonDashboard() {
   const [applicants, setApplicants] = useState([]);
   const [exams, setExams] = useState([]);
 
+  // Applicant filter states
+  const [applicantSearch, setApplicantSearch] = useState("");
+  const [applicantStatusFilter, setApplicantStatusFilter] = useState("all");
+  const [documentStatusFilter, setDocumentStatusFilter] = useState("all");
+
+  // Exam filter states
+  const [examSearch, setExamSearch] = useState("");
+  const [examStatusFilter, setExamStatusFilter] = useState("all");
+  const [dateRangeFilter, setDateRangeFilter] = useState("all");
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -65,6 +75,46 @@ export default function ChairpersonDashboard() {
     fetchTabData();
   }, [activeTab]);
 
+  // Filter applicants
+  const filteredApplicants = applicants.filter(applicant => {
+    const matchesSearch = 
+      applicant.name.toLowerCase().includes(applicantSearch.toLowerCase()) ||
+      applicant.id.toString().includes(applicantSearch);
+    
+    const matchesStatus = 
+      applicantStatusFilter === "all" || 
+      applicant.status.toLowerCase() === applicantStatusFilter.toLowerCase();
+    
+    const matchesDocuments = 
+      documentStatusFilter === "all" || 
+      applicant.documents.toLowerCase() === documentStatusFilter.toLowerCase();
+    
+    return matchesSearch && matchesStatus && matchesDocuments;
+  });
+
+  // Filter exams
+  const filteredExams = exams.filter(exam => {
+    const matchesSearch = 
+      exam.name.toLowerCase().includes(examSearch.toLowerCase()) ||
+      exam.id.toString().includes(examSearch);
+    
+    const matchesStatus = 
+      examStatusFilter === "all" || 
+      exam.status.toLowerCase() === examStatusFilter.toLowerCase();
+    
+    const matchesDate = () => {
+      if (dateRangeFilter === "all") return true;
+      const examDate = new Date(exam.date);
+      const today = new Date();
+      
+      if (dateRangeFilter === "upcoming") return examDate >= today;
+      if (dateRangeFilter === "past") return examDate < today;
+      return true;
+    };
+    
+    return matchesSearch && matchesStatus && matchesDate();
+  });
+
   if (error) {
     return (
       <div className={styles.error}>
@@ -83,7 +133,7 @@ export default function ChairpersonDashboard() {
       <div className={styles.dashboardMain}>
         <div className={styles.dashboardHeader}>
           <h1 className={styles.dashboardTitle}>
-            {data.department} Department Dashboard
+            {data.department} IT Department Dashboard
           </h1>
           <div className={styles.userInfo}>
             <span className={styles.userRole}>Department Chairperson</span>
@@ -110,7 +160,7 @@ export default function ChairpersonDashboard() {
               <h2 className={styles.infoAlertTitle}>Department View</h2>
               <p className={styles.infoAlertText}>
                 You are viewing data for the <strong>{data.department}</strong>{" "}
-                department only
+                IT department only
               </p>
             </div>
           </div>
@@ -236,15 +286,97 @@ export default function ChairpersonDashboard() {
 
           {activeTab === "applicants" && (
             <div className={styles.tabContent}>
-              <h2 className={styles.tabTitle}>Applicant Management</h2>
-              <ApplicantsTable applicants={applicants} />
+              <h2 className={styles.tabTitles}>Applicant Management</h2>
+              
+              {/* Applicant Filter Controls */}
+              <div className={styles.filterControls}>
+                <div className={styles.filterGroup}>
+                  <input
+                    type="text"
+                    placeholder="Search by name or ID..."
+                    value={applicantSearch}
+                    onChange={(e) => setApplicantSearch(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Status:</label>
+                  <select
+                    value={applicantStatusFilter}
+                    onChange={(e) => setApplicantStatusFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Documents:</label>
+                  <select
+                    value={documentStatusFilter}
+                    onChange={(e) => setDocumentStatusFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All</option>
+                    <option value="complete">Complete</option>
+                    <option value="incomplete">Incomplete</option>
+                  </select>
+                </div>
+              </div>
+
+              <ApplicantsTable applicants={filteredApplicants} />
             </div>
           )}
 
           {activeTab === "exams" && (
             <div className={styles.tabContent}>
-              <h2 className={styles.tabTitle}>Exam Schedule</h2>
-              <ExamsTable exams={exams} />
+              <h2 className={styles.tabTitles}>Exam Schedule</h2>
+              
+              {/* Exam Filter Controls */}
+              <div className={styles.filterControls}>
+                <div className={styles.filterGroup}>
+                  <input
+                    type="text"
+                    placeholder="Search by exam name or ID..."
+                    value={examSearch}
+                    onChange={(e) => setExamSearch(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Status:</label>
+                  <select
+                    value={examStatusFilter}
+                    onChange={(e) => setExamStatusFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="scheduled">Scheduled</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Date Range:</label>
+                  <select
+                    value={dateRangeFilter}
+                    onChange={(e) => setDateRangeFilter(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">All Dates</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="past">Past</option>
+                  </select>
+                </div>
+              </div>
+
+              <ExamsTable exams={filteredExams} />
             </div>
           )}
         </div>
@@ -253,7 +385,7 @@ export default function ChairpersonDashboard() {
   );
 }
 
-// Sub-components kept in the same file
+// Sub-components
 function StatCard({ title, value, icon }) {
   return (
     <div className={styles.statCard}>
@@ -278,29 +410,33 @@ function ApplicantsTable({ applicants }) {
         <div>Applied Date</div>
         <div>Documents</div>
       </div>
-      {applicants.map((applicant) => (
-        <div key={applicant.id} className={styles.tableRow}>
-          <div>{applicant.id}</div>
-          <div>{applicant.name}</div>
-          <div
-            className={`${styles.statusBadge} ${
-              styles[applicant.status.toLowerCase()]
-            }`}
-          >
-            {applicant.status}
+      {applicants.length > 0 ? (
+        applicants.map((applicant) => (
+          <div key={applicant.id} className={styles.tableRow}>
+            <div>{applicant.id}</div>
+            <div>{applicant.name}</div>
+            <div
+              className={`${styles.statusBadge} ${
+                styles[applicant.status.toLowerCase()]
+              }`}
+            >
+              {applicant.status}
+            </div>
+            <div>{applicant.appliedDate}</div>
+            <div
+              className={
+                applicant.documents === "Complete"
+                  ? styles.complete
+                  : styles.incomplete
+              }
+            >
+              {applicant.documents}
+            </div>
           </div>
-          <div>{applicant.appliedDate}</div>
-          <div
-            className={
-              applicant.documents === "Complete"
-                ? styles.complete
-                : styles.incomplete
-            }
-          >
-            {applicant.documents}
-          </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <div className={styles.noResults}>No applicants match the current filters</div>
+      )}
     </div>
   );
 }
@@ -315,49 +451,27 @@ function ExamsTable({ exams }) {
         <div>Time</div>
         <div>Location</div>
         <div>Status</div>
-        <div>Participants</div>
       </div>
-      {exams.map((exam) => (
-        <div key={exam.id} className={styles.tableRow}>
-          <div>{exam.id}</div>
-          <div>{exam.name}</div>
-          <div>{exam.date}</div>
-          <div>{exam.time}</div>
-          <div>{exam.location}</div>
-          <div
-            className={`${styles.statusBadge} ${
-              styles[exam.status.toLowerCase()]
-            }`}
-          >
-            {exam.status}
-          </div>
-          <div>{exam.participants}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function EventsList({ events }) {
-  return (
-    <div className={styles.eventsGrid}>
-      {events.map((event) => (
-        <div key={event.id} className={styles.eventCard}>
-          <div className={styles.eventHeader}>
-            <h3>{event.title}</h3>
-            <span className={styles.eventType}>{event.type}</span>
-          </div>
-          <div className={styles.eventDetails}>
-            <div>
-              <Calendar size={16} /> {event.date}
+      {exams.length > 0 ? (
+        exams.map((exam) => (
+          <div key={exam.id} className={styles.tableRow}>
+            <div>{exam.id}</div>
+            <div>{exam.name}</div>
+            <div>{exam.date}</div>
+            <div>{exam.time}</div>
+            <div>{exam.location}</div>
+            <div
+              className={`${styles.statusBadge} ${
+                styles[exam.status.toLowerCase()]
+              }`}
+            >
+              {exam.status}
             </div>
-            <div>
-              <Clock size={16} /> {event.time}
-            </div>
-            <div>📍 {event.location}</div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <div className={styles.noResults}>No exams match the current filters</div>
+      )}
     </div>
   );
 }
