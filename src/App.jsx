@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/home";
 import EditAccount from "./pages/editAccount/editAccount";
 import EditAccountProfile from "./pages/editAccountProfile/editAccountProfile";
+import ChangePassword from "./pages/changePassword/changePassword";
 
 export default function App() {
 	return (
@@ -10,6 +11,7 @@ export default function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/edit-account" element={<EditAccount />} />
 				<Route path="/edit-profile" element={<EditAccountProfile />} />
+				<Route path="/change-password" element={<ChangePassword />} />
 			</Routes>
 		</Router>
 	);
