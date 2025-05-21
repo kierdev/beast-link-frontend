@@ -38,4 +38,10 @@ export const applicantData = {
 	email: "juandelacruz@gmail.com",
 	medicalConditions: "None",
 	homeAddress: "Blk 12, Lot 8, Phase 3, Karuhatan, Valenzuela City, Metro Manila, 1441",
+	admissionData: {
+		firstChoice: "Bachelor of Science in Information Technology",
+		secondChoice: "Bachelor of Science in Computer Science",
+		typeOfApplicant: "Freshman",
+		statusOfAdmission: "Pending",
+	},
 };

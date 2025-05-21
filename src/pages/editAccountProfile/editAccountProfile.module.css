@@ -1,0 +1,85 @@
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 24px;
+}
+
+.pageTitle {
+	font-size: 24px;
+	color: #333;
+	margin-bottom: 24px;
+	font-weight: 500;
+}
+
+.actionButtons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-top: 24px;
+}
+
+.saveBtn,
+.cancelBtn {
+	padding: 8px 24px;
+	border-radius: 6px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.2s, border-color 0.2s;
+	min-width: 120px;
+}
+
+.saveBtn {
+	background: #11432b;
+	color: white;
+	border: none;
+}
+
+.saveBtn:hover {
+	background: #0a2e1d;
+}
+
+.cancelBtn {
+	background: white;
+	color: #333;
+	border: 1px solid #ddd;
+}
+
+.cancelBtn:hover {
+	background: #f5f5f5;
+	border-color: #ccc;
+}
+
+.statusMessage {
+	padding: 12px 16px;
+	border-radius: 6px;
+	margin-top: 16px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.success {
+	background-color: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+}
+
+.error {
+	background-color: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding: 16px;
+	}
+
+	.actionButtons {
+		flex-direction: column-reverse;
+	}
+
+	.saveBtn,
+	.cancelBtn {
+		width: 100%;
+	}
+}

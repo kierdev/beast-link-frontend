@@ -1,21 +1,9 @@
 import React from "react";
 import "./AdmissionDetailsCard.css";
 
-export const AdmissionDetailsCard = ({ admissionData, onUpdate, isEditing }) => {
-	const renderField = (value, id, onChange, placeholder) => {
-		if (isEditing) {
-			return (
-				<input
-					id={id}
-					type="text"
-					className="admission-info-card__input"
-					value={value || ""}
-					onChange={onChange}
-					placeholder={placeholder}
-				/>
-			);
-		}
-		return <div className="admission-info-card__field">{value || ""}</div>;
+export const AdmissionDetailsCard = ({ admissionData }) => {
+	const renderField = (value) => {
+		return <div className="admission-info-card__field">{value || "Not specified"}</div>;
 	};
 
 	return (
@@ -28,40 +16,19 @@ export const AdmissionDetailsCard = ({ admissionData, onUpdate, isEditing }) => 
 				<div className="admission-info-card__row">
 					<div className="admission-info-card__column">
 						<label htmlFor="firstChoice">First Choice:</label>
-						{renderField(
-							admissionData.firstChoice,
-							"firstChoice",
-							(e) => onUpdate({ ...admissionData, firstChoice: e.target.value }),
-							"First Choice Program"
-						)}
+						{renderField(admissionData.admissionData?.firstChoice)}
 						<label htmlFor="secondChoice" style={{ marginTop: 12 }}>
 							Second Choice:
 						</label>
-						{renderField(
-							admissionData.secondChoice,
-							"secondChoice",
-							(e) => onUpdate({ ...admissionData, secondChoice: e.target.value }),
-							"Second Choice Program"
-						)}
+						{renderField(admissionData.admissionData?.secondChoice)}
 					</div>
 					<div className="admission-info-card__column">
 						<label htmlFor="typeOfApplicant">Type of Applicant:</label>
-						{renderField(
-							admissionData.typeOfApplicant,
-							"typeOfApplicant",
-							(e) => onUpdate({ ...admissionData, typeOfApplicant: e.target.value }),
-							"Type of Applicant"
-						)}
+						{renderField(admissionData.admissionData?.typeOfApplicant)}
 						<label htmlFor="statusOfAdmission" style={{ marginTop: 12 }}>
 							Status of Admission:
 						</label>
-						{renderField(
-							admissionData.statusOfAdmission,
-							"statusOfAdmission",
-							(e) =>
-								onUpdate({ ...admissionData, statusOfAdmission: e.target.value }),
-							"Status of Admission"
-						)}
+						{renderField(admissionData.admissionData?.statusOfAdmission)}
 					</div>
 				</div>
 			</div>

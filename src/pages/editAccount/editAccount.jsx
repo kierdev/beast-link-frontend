@@ -141,21 +141,12 @@ const EditAccount = ({ currentUser = null }) => {
 						isEditing={isEditing}
 						onEditToggle={handleEditToggle}
 					/>
-
 					<PersonalInfoCard
 						userData={isEditing ? editDraft : userData}
 						onUpdate={handleUpdate}
 						isEditing={isEditing}
-					/>
-
-					{userRole === "Applicant" && (
-						<AdmissionDetailsCard
-							admissionData={isEditing ? editDraft : userData}
-							isEditing={isEditing}
-							onUpdate={handleUpdate}
-						/>
-					)}
-
+					/>{" "}
+					{userRole === "Applicant" && <AdmissionDetailsCard admissionData={userData} />}
 					<div className={styles["action-buttons"]}>
 						<button className={styles["cancel-btn"]} onClick={handleCancel}>
 							Cancel
@@ -168,7 +159,6 @@ const EditAccount = ({ currentUser = null }) => {
 							{isSaving ? "Saving..." : isEditing ? "Save Changes" : "Update"}
 						</button>
 					</div>
-
 					{saveMessage && (
 						<div className={styles["save-message"] + " " + styles["success"]}>
 							{saveMessage}
