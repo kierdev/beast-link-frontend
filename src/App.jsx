@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/home";
-import Dashboard from "./pages/dashboard/dashboard";
+import EditAccount from "./pages/editAccount/editAccount";
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/edit-account" element={<EditAccount />} />
+			</Routes>
+		</Router>
+	);
 }

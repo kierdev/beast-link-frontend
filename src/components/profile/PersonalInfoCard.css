@@ -1,0 +1,119 @@
+.date-input-container {
+	position: relative;
+}
+
+.calendar-icon {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 16px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* Card container */
+.personal-info-card__container {
+	width: 100%;
+	background: #fff;
+	border-radius: 12px;
+	border: 1.5px solid #11432b;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+	margin-bottom: 24px;
+	overflow: hidden;
+}
+
+.personal-info-card__header {
+	background: #11432b;
+	color: #fff;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	padding: 16px 20px;
+	font-weight: 700;
+	font-size: 20px;
+}
+
+.personal-info-card__content {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	padding: 20px;
+}
+
+.personal-info-card__row {
+	display: flex;
+	flex: 1 1 100%;
+	gap: 16px;
+	width: 100%;
+	margin-bottom: 15px;
+	flex-wrap: wrap;
+}
+
+.personal-info-card__column {
+	flex: 1 1 220px;
+	min-width: 180px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.personal-info-card__column--wide {
+	flex: 2 1 320px;
+}
+
+.personal-info-card__column--full {
+	flex: 2 1 100%;
+}
+
+.personal-info-card__input {
+	background: #ededed;
+	border-radius: 6px;
+	padding: 7px 12px;
+	font-size: 15px;
+	color: #222;
+	border: 1px solid #bbb;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.personal-info-card__input--full {
+	width: 100%;
+}
+
+.personal-info-card__divider {
+	border: none;
+	border-top: 1px solid #e0e0e0;
+	margin: 8px 0;
+}
+
+label {
+	color: #111 !important;
+	font-size: 15px;
+	font-weight: 500;
+	margin-bottom: 2px;
+	background: none;
+}
+
+input[disabled] {
+	background-color: #f0f0f0;
+	cursor: not-allowed;
+}
+
+/* Responsive design */
+@media screen and (max-width: 900px) {
+	.personal-info-card__content {
+		flex-direction: column;
+		gap: 12px;
+	}
+	.personal-info-card__row {
+		flex-direction: column;
+		gap: 8px;
+	}
+	.personal-info-card__column {
+		min-width: 100%;
+	}
+}

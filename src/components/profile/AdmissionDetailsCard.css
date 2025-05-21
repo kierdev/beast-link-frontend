@@ -1,0 +1,97 @@
+/* Card container */
+.admission-info-card__container {
+	width: 100%;
+	background: #fff;
+	border-radius: 16px;
+	border: 1.5px solid #222;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+	margin-bottom: 24px;
+	overflow: hidden;
+}
+
+.admission-info-card__header {
+	background: #11432b;
+	color: #fff;
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	padding: 16px 20px;
+	font-weight: 700;
+	font-size: 22px;
+}
+
+.admission-info-card__content {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.admission-info-card__section-title {
+	color: #19776d;
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 18px;
+}
+
+.admission-info-card__row {
+	display: flex;
+	gap: 32px;
+	width: 100%;
+	flex-wrap: wrap;
+}
+
+.admission-info-card__column {
+	flex: 1 1 320px;
+	min-width: 220px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.admission-info-card__field {
+	background: #ededed;
+	border-radius: 6px;
+	padding: 10px 14px;
+	font-size: 15px;
+	color: #222;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	min-width: 180px;
+	width: fit-content;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.admission-info-card__input {
+	background: #ededed;
+	border-radius: 6px;
+	padding: 10px 14px;
+	font-size: 15px;
+	color: #222;
+	border: 1px solid #bbb;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	min-width: 180px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+label {
+	color: #222;
+	font-size: 15px;
+	font-weight: 500;
+	margin-bottom: 2px;
+}
+
+@media screen and (max-width: 900px) {
+	.admission-info-card__content {
+		padding: 12px;
+	}
+	.admission-info-card__row {
+		flex-direction: column;
+		gap: 12px;
+	}
+	.admission-info-card__column {
+		min-width: 100%;
+	}
+}
